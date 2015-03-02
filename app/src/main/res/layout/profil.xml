@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:layout_height="wrap_content"
+    android:layout_width="fill_parent">
+
+    <Button
+        android:id="@+id/vendeur"
+        android:text="@string/vendeur"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent" />
+
+    <Button
+        android:id="@+id/client"
+        android:text="@string/client"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"/>
+
+    <TextView
+        android:id="@+id/retour"
+        android:text="@string/retour"
+        android:gravity="right"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent" />
+
+</LinearLayout>

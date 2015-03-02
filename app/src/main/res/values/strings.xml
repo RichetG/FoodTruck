@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">FoodTruckTracker</string>
+    <string name="valider">Valider</string>
+    <string name="identifiant">Saisir identifiant</string>
+    <string name="motDePasse">Saisir mot de passe</string>
+    <string name="creer">Créer son compte</string>
+    <string name="verification">Resaisir mot de passe</string>
+    <string name="mail">Saisir adresse email</string>
+    <string name="client">Compte client</string>
+    <string name="vendeur">Compte vendeur</string>
+    <string name="action_settings">Settings</string>
+    <string name="connexion">Connexion</string>
+    <string name="automatique">Connexion automatique</string>
+    <string name="localisation">Poster une localisation</string>
+    <string name="modifPage">Modifier la page</string>
+    <string name="deconnection">Se déconnecter</string>
+    <string name="login"></string>
+    <string name="oublier">Mot de passe oublié?</string>
+    <string name="nouveau">Saisir nouveau mot de passe</string>
+    <string name="verifNouveau">Resaisir nouveau mot de passe</string>
+    <string name="retour">Retour</string>
+    <string name="erreurVide">Adresse email et mot de passe sont obligatoires</string>
+    <string name="erreurVide2">Identifiant, adresse email et mot de passe sont obligatoires</string>
+    <string name="erreurVide3">adresse email et mot de passe sont obligatoires</string>
+    <string name="erreurInconnu">L adresse email et mot de passe sont incorrects</string>
+    <string name="erreurMdp">Les mots de passes sont différents</string>
+    <string name="erreurValMdp">Mot de passe comportant au minimum 6 caractères, 1 majuscule et 1 chiffre</string>
+    <string name="erreurIdentif">Identifiant trop court minimum 4 caractères</string>
+    <string name="erreurMail">Adresse email non conforme</string>
+    <string name="validerMdp">Mot de passe modifié</string>
+    <string name="description">Description:</string>
+    <string name="promotion">Promotions:</string>
+    <string name="menus">Menus:</string>
+    <string name="choisir">Choisir un logo</string>
+    <string name="mapKey">AIzaSyBFtcmf2HNZA6Z_eLwtFscgLj09uueH1ZQ</string>
+    <string name="locDefault">Localisation par défaut</string>
+
+</resources>

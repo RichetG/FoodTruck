@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    android:layout_width="fill_parent">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent">
+
+        <TextView
+            android:id="@+id/login"
+            android:text="@string/login"
+            android:gravity="left"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_width="0px" />
+
+        <TextView
+            android:id="@+id/deconnection"
+            android:text="@string/deconnection"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:layout_height="wrap_content"
+            android:layout_width="0px" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/geolocalisation"
+        android:text="@string/localisation"
+        android:layout_marginTop="100px"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent" />
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent" />
+
+    <Button
+        android:id="@+id/modifPage"
+        android:text="@string/modifPage"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent" />
+
+</LinearLayout>
