@@ -1,6 +1,7 @@
 package com.example.guillaume.foodtruck;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,12 +13,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 public class MainActivity extends Activity {
 
     private EditText email, mdp;
     private TextView creerCompte, oublier;
     private Button connexion;
     private CheckBox auto;
+    private boolean coche=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +37,55 @@ public class MainActivity extends Activity {
         connexion = (Button) findViewById(R.id.buttonConnexion);
         auto = (CheckBox) findViewById(R.id.auto);
         oublier = (TextView) findViewById(R.id.oublier);
+
+        //recuperation coche
+        try {
+            FileInputStream in=MainActivity.this.openFileInput("coche.txt");
+            int c;
+            String temp="";
+            while( (c = in.read()) != -1){
+                temp = temp + Character.toString((char)c);
+            }
+            coche= Boolean.parseBoolean(temp);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(coche==true) {
+            auto.setChecked(true);
+            //recuperation id
+            try {
+                FileInputStream inId=MainActivity.this.openFileInput("id.txt");
+                int c;
+                String temp="";
+                while( (c = inId.read()) != -1){
+                    temp = temp + Character.toString((char)c);
+                }
+                email.setText(temp);
+                email.setTextColor(Color.BLACK);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //recuperation mdp
+            try {
+                FileInputStream inMdp=MainActivity.this.openFileInput("mdp.txt");
+                int c;
+                String temp="";
+                while( (c = inMdp.read()) != -1){
+                    temp = temp + Character.toString((char)c);
+                }
+                mdp.setText(temp);
+                mdp.setTextColor(Color.BLACK);
+                mdp.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         //action sur EditText de l'identifiant
         email.setOnClickListener(new View.OnClickListener() {
@@ -98,8 +154,55 @@ public class MainActivity extends Activity {
         auto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO
-                //pré-remplir identifiant et mdp
+                if(auto.isChecked()) {
+                    coche=true;
+                    //sauvegarde email
+                    try {
+                        FileOutputStream outId = MainActivity.this.openFileOutput("id.txt", Context.MODE_PRIVATE);
+                        outId.write(email.getText().toString().getBytes());
+                        outId.flush();
+                        outId.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    //sauvegarde mdp
+                    try {
+                        FileOutputStream outMdp = MainActivity.this.openFileOutput("mdp.txt", Context.MODE_PRIVATE);
+                        outMdp.write(mdp.getText().toString().getBytes());
+                        outMdp.flush();
+                        outMdp.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    //sauvegarde coche
+                    try {
+                        FileOutputStream out = MainActivity.this.openFileOutput("coche.txt", Context.MODE_PRIVATE);
+                        out.write(String.valueOf(coche).getBytes());
+                        out.flush();
+                        out.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }else {
+                    coche=false;
+                    //sauvegarde coche
+                    try {
+                        FileOutputStream out = MainActivity.this.openFileOutput("coche.txt", Context.MODE_PRIVATE);
+                        out.write(String.valueOf(coche).getBytes());
+                        out.flush();
+                        out.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
 
