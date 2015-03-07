@@ -8,7 +8,6 @@ import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -18,7 +17,6 @@ public class MdpOublier extends Activity{
 
     private EditText mail, nouveauMdp, verifNouveauMdp;
     private Button valider;
-    private TextView retour;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +27,6 @@ public class MdpOublier extends Activity{
         nouveauMdp = (EditText) findViewById(R.id.nouveauMdp);
         verifNouveauMdp = (EditText) findViewById(R.id.verifNouveauMdp);
         valider = (Button) findViewById(R.id.validerNouveauMdp);
-        retour = (TextView) findViewById(R.id.retourMdp);
 
         valider.setTextColor(Color.WHITE);
         valider.setBackgroundColor(Color.GREEN);
@@ -89,14 +86,6 @@ public class MdpOublier extends Activity{
                     Intent intent = new Intent(MdpOublier.this, MainActivity.class);
                     startActivity(intent);
                 }
-            }
-        });
-
-        retour.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MdpOublier.this, MainActivity.class);
-                startActivity(intent);
             }
         });
     }

@@ -1,47 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_gravity="center"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
-    android:layout_width="fill_parent">
+    android:layout_width="fill_parent"
+    android:layout_gravity="center">
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
+
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:src="@drawable/ic_launcher"
-            android:layout_weight="1"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@drawable/couvert"
+                android:id="@+id/image"
+                android:adjustViewBounds="true"
+                android:layout_weight="1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/choisir"
+                android:text="@string/choisir"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/description"/>
+
+        <EditText
+            android:id="@+id/description"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/promotion"/>
+
+        <EditText
+            android:id="@+id/promo"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/menus"/>
+
+        <EditText
+            android:id="@+id/menu"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
 
         <Button
-            android:id="@+id/choisir"
-            android:text="@string/choisir"
-            android:layout_weight="1"
+            android:id="@+id/validerPage"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/valider"/>
 
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/description"
-        android:text="@string/description"
-        android:layout_width="fill_parent"
-        android:layout_height="130dp" />
-
-    <EditText
-        android:id="@+id/promo"
-        android:text="@string/promotion"
-        android:layout_width="fill_parent"
-        android:layout_height="130dp" />
-
-    <EditText
-        android:id="@+id/menu"
-        android:text="@string/menus"
-        android:layout_width="fill_parent"
-        android:layout_height="130dp" />
-
-</LinearLayout>
+</ScrollView>

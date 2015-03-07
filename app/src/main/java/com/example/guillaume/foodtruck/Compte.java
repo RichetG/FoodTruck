@@ -8,7 +8,6 @@ import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -18,7 +17,6 @@ public class Compte extends Activity {
 
     private EditText identifiant, mail, mdp, verif;
     private Button valider;
-    private TextView retour;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +28,6 @@ public class Compte extends Activity {
         mdp = (EditText) findViewById(R.id.motDePasseCompte);
         verif = (EditText) findViewById(R.id.verificationCompte);
         valider = (Button) findViewById(R.id.buttonValiderCompte);
-        retour = (TextView) findViewById(R.id.retourCompte);
 
         identifiant.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,14 +100,6 @@ public class Compte extends Activity {
                     Intent intent = new Intent(Compte.this, Profil.class);
                     startActivity(intent);
                 }
-            }
-        });
-
-        retour.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Compte.this, MainActivity.class);
-                startActivity(intent);
             }
         });
     }

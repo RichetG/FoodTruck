@@ -90,7 +90,7 @@ public class Geolocalisation extends FragmentActivity implements GoogleApiClient
 
     @Override
     public void onConnected(Bundle bundle) {
-        Log.i(TAG, "Services de localisation connectés");
+        Log.i(TAG, "@string/connecte");
         Location location=LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if(location==null){
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
@@ -111,7 +111,7 @@ public class Geolocalisation extends FragmentActivity implements GoogleApiClient
 
     @Override
     public void onConnectionSuspended(int i) {
-        Log.i(TAG, "Services de localisation suspendus. S'il vous plaît veuillez vous reconnecté.");
+        Log.i(TAG, "@string/suspendu");
     }
 
     @Override
@@ -124,7 +124,7 @@ public class Geolocalisation extends FragmentActivity implements GoogleApiClient
                 e.printStackTrace();
             }
         }else{
-            Log.i(TAG, "Connexion des services de localisation échoué avec le code "+connectionResult.getErrorCode());
+            Log.i(TAG, "@string/echec"+connectionResult.getErrorCode());
         }
     }
 
