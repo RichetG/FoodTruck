@@ -63,9 +63,6 @@ public class Compte extends Activity {
             }
         });
 
-        valider.setBackgroundColor(Color.GREEN);
-        valider.setTextColor(Color.WHITE);
-
         valider.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

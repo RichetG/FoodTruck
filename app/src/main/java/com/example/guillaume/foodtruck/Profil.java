@@ -2,7 +2,6 @@ package com.example.guillaume.foodtruck;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,17 +21,13 @@ public class Profil extends Activity {
         client = (Button) findViewById(R.id.client);
         vendeur = (Button) findViewById(R.id.vendeur);
 
-        client.setTextColor(Color.WHITE);
-        client.setBackgroundColor(Color.GREEN);
-
-        vendeur.setTextColor(Color.WHITE);
-        vendeur.setBackgroundColor(Color.GREEN);
-
         client.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Profil.this, Client.class);
                 startActivity(intent);
+                //TODO
+                //ajouter BDD qu'il est client
             }
         });
 
@@ -41,6 +36,8 @@ public class Profil extends Activity {
             public void onClick(View view) {
                 Intent intent = new Intent(Profil.this, Vendeur.class);
                 startActivity(intent);
+                //TODO
+                //ajouter BDD qu'il est vendeur
             }
         });
     }

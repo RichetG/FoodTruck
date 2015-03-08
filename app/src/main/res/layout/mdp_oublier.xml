@@ -10,6 +10,11 @@
         android:id="@+id/mailOublier"
         android:text="@string/mail"
         android:textColor="#A4A4A4"
+        android:background="#FFFFFF"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent" />
+
+    <TextView
         android:layout_height="wrap_content"
         android:layout_width="fill_parent" />
 
@@ -17,6 +22,11 @@
         android:id="@+id/nouveauMdp"
         android:text="@string/nouveau"
         android:textColor="#A4A4A4"
+        android:background="#FFFFFF"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent" />
+
+    <TextView
         android:layout_height="wrap_content"
         android:layout_width="fill_parent" />
 
@@ -24,12 +34,19 @@
         android:id="@+id/verifNouveauMdp"
         android:text="@string/verifNouveau"
         android:textColor="#A4A4A4"
+        android:background="#FFFFFF"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent" />
+
+    <TextView
         android:layout_height="wrap_content"
         android:layout_width="fill_parent" />
 
     <Button
         android:id="@+id/validerNouveauMdp"
         android:text="@string/valider"
+        android:background="#31B404"
+        android:textColor="#FFFFFF"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent" />
 

@@ -115,9 +115,6 @@ public class MainActivity extends Activity {
             }
         });
 
-        connexion.setBackgroundColor(Color.GREEN);
-        connexion.setTextColor(Color.WHITE);
-
         //action pour la connexion
         connexion.setOnClickListener(new View.OnClickListener() {
             @Override

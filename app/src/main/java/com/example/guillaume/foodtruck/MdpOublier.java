@@ -28,9 +28,6 @@ public class MdpOublier extends Activity{
         verifNouveauMdp = (EditText) findViewById(R.id.verifNouveauMdp);
         valider = (Button) findViewById(R.id.validerNouveauMdp);
 
-        valider.setTextColor(Color.WHITE);
-        valider.setBackgroundColor(Color.GREEN);
-
         mail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

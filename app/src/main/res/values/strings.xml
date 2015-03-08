@@ -17,6 +17,7 @@
     <string name="modifPage">Modifier la page</string>
     <string name="deconnection">Se déconnecter</string>
     <string name="login">identifiant</string>
+    <string name="envoyer">Envoyer localisation</string>
     <string name="oublier">Mot de passe oublié?</string>
     <string name="nouveau">Saisir nouveau mot de passe</string>
     <string name="verifNouveau">Resaisir nouveau mot de passe</string>

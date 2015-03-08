@@ -10,38 +10,60 @@
         android:id="@+id/identifiantCompte"
         android:text="@string/identifiant"
         android:textColor="#A4A4A4"
+        android:background="#FFFFFF"
         android:gravity="left"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent" />
 
     <EditText
         android:id="@+id/mailCompte"
         android:text="@string/mail"
         android:textColor="#A4A4A4"
+        android:background="#FFFFFF"
         android:gravity="left"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent" />
 
     <EditText
         android:id="@+id/motDePasseCompte"
         android:text="@string/motDePasse"
         android:textColor="#A4A4A4"
+        android:background="#FFFFFF"
         android:gravity="left"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent" />
 
     <EditText
         android:id="@+id/verificationCompte"
         android:text="@string/verification"
         android:textColor="#A4A4A4"
+        android:background="#FFFFFF"
         android:gravity="left"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent" />
 
     <Button
         android:id="@+id/buttonValiderCompte"
         android:text="@string/valider"
         android:gravity="center"
+        android:background="#31B404"
+        android:textColor="#FFFFFF"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent" />
 

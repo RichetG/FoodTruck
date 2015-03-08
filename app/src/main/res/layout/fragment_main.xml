@@ -10,14 +10,20 @@
         android:id="@+id/identifiant"
         android:text="@string/mail"
         android:textColor="#A4A4A4"
+        android:background="#FFFFFF"
         android:gravity="left"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent" />
 
     <EditText
         android:id="@+id/motDePasse"
         android:text="@string/motDePasse"
         android:textColor="#A4A4A4"
+        android:background="#FFFFFF"
         android:gravity="left"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"/>
@@ -31,12 +37,14 @@
         <CheckBox
             android:id="@+id/auto"
             android:layout_weight="1"
+            android:textColor="#FFFFFF"
             android:layout_height="wrap_content"
             android:layout_width="0px" />
 
         <TextView
             android:text="@string/automatique"
             android:layout_weight="3"
+            android:textColor="#FFFFFF"
             android:layout_height="wrap_content"
             android:layout_width="0px" />
 
@@ -46,6 +54,8 @@
         android:id="@+id/buttonConnexion"
         android:text="@string/connexion"
         android:gravity="center"
+        android:background="#31B404"
+        android:textColor="#FFFFFF"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent" />
 
@@ -53,12 +63,14 @@
         android:id="@+id/buttonCreer"
         android:text="@string/creer"
         android:gravity="center"
+        android:textColor="#FFFFFF"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent" />
 
     <TextView
         android:id="@+id/oublier"
         android:text="@string/oublier"
+        android:textColor="#FFFFFF"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent" />
 

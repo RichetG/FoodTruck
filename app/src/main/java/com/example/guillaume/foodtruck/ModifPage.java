@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -42,9 +41,6 @@ public class ModifPage extends Activity{
         logo = (Button) findViewById(R.id.choisir);
         valider = (Button) findViewById(R.id.validerPage);
         imageView = (ImageView) findViewById(R.id.image);
-
-        logo.setBackgroundColor(Color.GREEN);
-        valider.setBackgroundColor(Color.GREEN);
 
         //recuperation du contenu de description
         try{

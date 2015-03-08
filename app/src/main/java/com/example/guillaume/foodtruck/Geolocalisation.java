@@ -5,6 +5,9 @@ import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.common.ConnectionResult;
@@ -20,9 +23,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class Geolocalisation extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener{
 
     private GoogleApiClient mGoogleApiClient;
+    private double currentLatitude, currentLongitude;
     public static final String TAG=Geolocalisation.class.getSimpleName();
     private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST=9000;
     private LocationRequest mLocationRequest;
+    private Button envoie;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
     @Override
@@ -30,8 +35,19 @@ public class Geolocalisation extends FragmentActivity implements GoogleApiClient
         super.onCreate(savedInstanceState);
         setContentView(R.layout.geolocalisation);
         setUpMapIfNeeded();
+        envoie=(Button) findViewById(R.id.envoie);
         mGoogleApiClient=new GoogleApiClient.Builder(this).addConnectionCallbacks(this).addOnConnectionFailedListener(this).addApi(LocationServices.API).build();
         mLocationRequest=LocationRequest.create().setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY).setInterval(10*1000).setFastestInterval(1000);
+
+        envoie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO
+                //envoi la localisation au client
+                String coord=currentLatitude+" "+currentLongitude;
+                Toast.makeText(Geolocalisation.this, coord, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -101,8 +117,8 @@ public class Geolocalisation extends FragmentActivity implements GoogleApiClient
 
     private void handleNewLocation(Location location){
         Log.d(TAG, location.toString());
-        double currentLatitude=location.getLatitude();
-        double currentLongitude=location.getLongitude();
+        currentLatitude=location.getLatitude();
+        currentLongitude=location.getLongitude();
         LatLng latLng=new LatLng(currentLatitude, currentLongitude);
         MarkerOptions options=new MarkerOptions().position(latLng).title("Vous êtes ici");
         mMap.addMarker(options);
@@ -132,4 +148,5 @@ public class Geolocalisation extends FragmentActivity implements GoogleApiClient
     public void onLocationChanged(Location location) {
         handleNewLocation(location);
     }
+
 }

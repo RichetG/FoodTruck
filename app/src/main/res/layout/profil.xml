@@ -10,6 +10,8 @@
         android:id="@+id/vendeur"
         android:text="@string/vendeur"
         android:gravity="center"
+        android:background="#31B404"
+        android:textColor="#FFFFFF"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"/>
 
@@ -21,6 +23,8 @@
         android:id="@+id/client"
         android:text="@string/client"
         android:gravity="center"
+        android:background="#31B404"
+        android:textColor="#FFFFFF"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"/>
 

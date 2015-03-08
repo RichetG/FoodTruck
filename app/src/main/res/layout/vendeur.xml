@@ -14,6 +14,7 @@
         <TextView
             android:id="@+id/login"
             android:text="@string/login"
+            android:textColor="#FFFFFF"
             android:gravity="left"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -22,6 +23,7 @@
         <TextView
             android:id="@+id/deconnection"
             android:text="@string/deconnection"
+            android:textColor="#FFFFFF"
             android:layout_weight="1"
             android:gravity="right"
             android:layout_height="wrap_content"
@@ -33,6 +35,8 @@
         android:id="@+id/geolocalisation"
         android:text="@string/localisation"
         android:layout_marginTop="100px"
+        android:background="#31B404"
+        android:textColor="#FFFFFF"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent" />
 
@@ -43,6 +47,8 @@
     <Button
         android:id="@+id/modifPage"
         android:text="@string/modifPage"
+        android:background="#31B404"
+        android:textColor="#FFFFFF"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent" />
 
