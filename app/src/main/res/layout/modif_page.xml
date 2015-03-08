@@ -7,9 +7,22 @@
 
     <LinearLayout
         android:orientation="vertical"
-
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/titre"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/titre"
+            android:textColor="#A4A4A4"
+            android:background="#FFFFFF"/>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:orientation="horizontal"

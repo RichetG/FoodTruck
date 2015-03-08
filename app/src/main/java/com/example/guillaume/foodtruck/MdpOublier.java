@@ -1,6 +1,7 @@
 package com.example.guillaume.foodtruck;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,6 +11,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 /**
  * Created by guillaume on 07/02/15.
  */
@@ -17,6 +23,7 @@ public class MdpOublier extends Activity{
 
     private EditText mail, nouveauMdp, verifNouveauMdp;
     private Button valider;
+    private String mailRecup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +34,21 @@ public class MdpOublier extends Activity{
         nouveauMdp = (EditText) findViewById(R.id.nouveauMdp);
         verifNouveauMdp = (EditText) findViewById(R.id.verifNouveauMdp);
         valider = (Button) findViewById(R.id.validerNouveauMdp);
+
+        //recuperation email
+        try {
+            FileInputStream inId=openFileInput("email.txt");
+            int c;
+            String temp="";
+            while( (c = inId.read()) != -1){
+                temp = temp + Character.toString((char)c);
+            }
+            mailRecup=temp;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         mail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,11 +99,23 @@ public class MdpOublier extends Activity{
                     nouveauMdp.setText("");
                     verifNouveauMdp.setText("");
                 }else{
-                    //TODO
-                    //modifier le mot de passe dans la BDD
-                    Toast.makeText(MdpOublier.this, R.string.validerMdp, Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(MdpOublier.this, MainActivity.class);
-                    startActivity(intent);
+                    if(e.equals(mailRecup)) {
+                        //sauvegarde mdp
+                        try {
+                            FileOutputStream outId = openFileOutput("mdp.txt", Context.MODE_WORLD_READABLE);
+                            outId.write(nouveauMdp.getText().toString().getBytes());
+                            outId.close();
+                        } catch (FileNotFoundException f) {
+                            f.printStackTrace();
+                        } catch (IOException f) {
+                            f.printStackTrace();
+                        }
+                        Toast.makeText(MdpOublier.this, R.string.validerMdp, Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(MdpOublier.this, MainActivity.class);
+                        startActivity(intent);
+                    }else{
+                        Toast.makeText(MdpOublier.this, R.string.erreurMailFaux, Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });

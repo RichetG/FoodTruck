@@ -25,6 +25,7 @@ public class MainActivity extends Activity {
     private Button connexion;
     private CheckBox auto;
     private boolean coche=false;
+    private String mailRecup, mdpRecup, type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,39 +53,56 @@ public class MainActivity extends Activity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        //recuperation email
+        try {
+            FileInputStream inId=openFileInput("email.txt");
+            int c;
+            String temp="";
+            while( (c = inId.read()) != -1){
+                 temp = temp + Character.toString((char)c);
+            }
+            mailRecup=temp;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //recuperation mdp
+        try {
+            FileInputStream in=openFileInput("mdp.txt");
+            int c;
+            String temp="";
+            while( (c = in.read()) != -1){
+                 temp = temp + Character.toString((char)c);
+            }
+            mdpRecup=temp;
+        } catch (FileNotFoundException e) {
+             e.printStackTrace();
+        } catch (IOException e) {
+             e.printStackTrace();
+        }
+        //recuperation typeCompte
+        try {
+            FileInputStream in=openFileInput("compte.txt");
+            int c;
+            String temp="";
+            while( (c = in.read()) != -1){
+                temp = temp + Character.toString((char)c);
+            }
+            type=temp;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         if(coche==true) {
             auto.setChecked(true);
-            //recuperation id
-            try {
-                FileInputStream inId=MainActivity.this.openFileInput("id.txt");
-                int c;
-                String temp="";
-                while( (c = inId.read()) != -1){
-                    temp = temp + Character.toString((char)c);
-                }
-                email.setText(temp);
-                email.setTextColor(Color.BLACK);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            //recuperation mdp
-            try {
-                FileInputStream inMdp=MainActivity.this.openFileInput("mdp.txt");
-                int c;
-                String temp="";
-                while( (c = inMdp.read()) != -1){
-                    temp = temp + Character.toString((char)c);
-                }
-                mdp.setText(temp);
-                mdp.setTextColor(Color.BLACK);
-                mdp.setTransformationMethod(PasswordTransformationMethod.getInstance());
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            email.setText(mailRecup);
+            email.setTextColor(Color.BLACK);
+            mdp.setText(mdpRecup);
+            mdp.setTextColor(Color.BLACK);
+            mdp.setTransformationMethod(PasswordTransformationMethod.getInstance());
         }
 
         //action sur EditText de l'identifiant
@@ -133,17 +151,17 @@ public class MainActivity extends Activity {
                     Toast.makeText(MainActivity.this, R.string.erreurValMdp, Toast.LENGTH_SHORT).show();
                     mdp.setText("");
                 }else{
-                    //TODO
-                    //si le mdp et email sont bien dans la BDD alors on determiner si client ou vendeur
-                    //si client
-                    Intent intentClient = new Intent(MainActivity.this, Vendeur.class);
-                    startActivity(intentClient);
-                    //si vendeur
-                    // Intent intentVendeur = new Intent(MainActivity.this, Vendeur.class);
-                    // startActivity(intentVendeur);
-                    //sinon
-                    //message d'erreur
-                    // Toast.makeText(MainActivity.this, R.string.erreurInconnu, Toast.LENGTH_SHORT).show();
+                    if(!(m.equals(mdpRecup) && e.equals(mailRecup))) {
+                        Toast.makeText(MainActivity.this, R.string.erreurInconnu, Toast.LENGTH_SHORT).show();
+                    }else {
+                        if(type.toString().equals("client")) {
+                            Intent intentClient = new Intent(MainActivity.this, Client.class);
+                            startActivity(intentClient);
+                        }else if(type.toString().equals("vendeur")){
+                            Intent intentClient = new Intent(MainActivity.this, Vendeur.class);
+                            startActivity(intentClient);
+                        }
+                    }
                 }
             }
         });

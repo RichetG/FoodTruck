@@ -12,7 +12,7 @@
         android:layout_width="fill_parent">
 
         <TextView
-            android:id="@+id/login"
+            android:id="@+id/identifiantVendeur"
             android:text="@string/login"
             android:textColor="#FFFFFF"
             android:gravity="left"

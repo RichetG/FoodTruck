@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -24,7 +25,7 @@ import java.io.InputStream;
  */
 public class ModifPage extends Activity{
 
-    private EditText description, promo, menus;
+    private EditText description, promo, menus, titre;
     private Button logo, valider;
     private static final int REQUEST_CODE=1;
     private Bitmap bitmap;
@@ -38,13 +39,14 @@ public class ModifPage extends Activity{
         description = (EditText) findViewById(R.id.description);
         promo = (EditText) findViewById(R.id.promo);
         menus = (EditText) findViewById(R.id.menu);
+        titre=(EditText) findViewById(R.id.titre);
         logo = (Button) findViewById(R.id.choisir);
         valider = (Button) findViewById(R.id.validerPage);
         imageView = (ImageView) findViewById(R.id.image);
 
         //recuperation du contenu de description
         try{
-            FileInputStream inDes=ModifPage.this.openFileInput("des.txt");
+            FileInputStream inDes=openFileInput("des.txt");
             int c;
             String temp="";
             while( (c = inDes.read()) != -1){
@@ -58,7 +60,7 @@ public class ModifPage extends Activity{
         }
         //recuperation du contenu de promo
         try{
-            FileInputStream inPro=ModifPage.this.openFileInput("pro.txt");
+            FileInputStream inPro=openFileInput("pro.txt");
             int c;
             String temp="";
             while( (c = inPro.read()) != -1){
@@ -72,7 +74,7 @@ public class ModifPage extends Activity{
         }
         //recuperation du contenu de menus
         try{
-            FileInputStream inMen=ModifPage.this.openFileInput("men.txt");
+            FileInputStream inMen=openFileInput("men.txt");
             int c;
             String temp="";
             while( (c = inMen.read()) != -1){
@@ -84,9 +86,24 @@ public class ModifPage extends Activity{
         } catch (IOException e) {
             e.printStackTrace();
         }
+        //recuperation du contenu du titre
+        try{
+            FileInputStream inTit=openFileInput("tit.txt");
+            int c;
+            String temp="";
+            while( (c = inTit.read()) != -1){
+                temp = temp + Character.toString((char)c);
+            }
+            titre.setText(temp);
+            titre.setTextColor(Color.BLACK);
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         //recuperation image
         try {
-            FileInputStream inImg= ModifPage.this.openFileInput("icone.png");
+            FileInputStream inImg= openFileInput("icone.png");
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             byte[] b = new byte[1024];
             int bytesRead;
@@ -106,13 +123,21 @@ public class ModifPage extends Activity{
             e.printStackTrace();
         }
 
+        titre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                titre.setText("");
+                titre.setTextColor(Color.BLACK);
+            }
+        });
+
         valider.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(ModifPage.this, R.string.modification, Toast.LENGTH_SHORT).show();
                 //sauvegarde du contenu de description
                 try{
-                    FileOutputStream outDes=ModifPage.this.openFileOutput("des.txt", Context.MODE_PRIVATE);
+                    FileOutputStream outDes=openFileOutput("des.txt", Context.MODE_WORLD_READABLE);
                     outDes.write(description.getText().toString().getBytes());
                     outDes.close();
                 }catch (FileNotFoundException e){
@@ -122,7 +147,7 @@ public class ModifPage extends Activity{
                 }
                 //sauvegarde du contenu de promo
                 try{
-                    FileOutputStream outPro=ModifPage.this.openFileOutput("pro.txt", Context.MODE_PRIVATE);
+                    FileOutputStream outPro=openFileOutput("pro.txt", Context.MODE_WORLD_READABLE);
                     outPro.write(promo.getText().toString().getBytes());
                     outPro.close();
                 }catch (FileNotFoundException e){
@@ -132,9 +157,19 @@ public class ModifPage extends Activity{
                 }
                 //sauvegarde du contenu de menus
                 try{
-                    FileOutputStream outMen=ModifPage.this.openFileOutput("men.txt", Context.MODE_PRIVATE);
+                    FileOutputStream outMen=openFileOutput("men.txt", Context.MODE_WORLD_READABLE);
                     outMen.write(menus.getText().toString().getBytes());
                     outMen.close();
+                }catch (FileNotFoundException e){
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                //sauvegarde du contenu du titre
+                try{
+                    FileOutputStream outTit=openFileOutput("tit.txt", Context.MODE_WORLD_READABLE);
+                    outTit.write(titre.getText().toString().getBytes());
+                    outTit.close();
                 }catch (FileNotFoundException e){
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -147,7 +182,7 @@ public class ModifPage extends Activity{
                 bmap.compress(Bitmap.CompressFormat.PNG, 0 , bos);
                 byte[] biteArray = bos.toByteArray();
                 try {
-                    FileOutputStream fos=ModifPage.this.openFileOutput("icone.png", Context.MODE_PRIVATE);
+                    FileOutputStream fos=openFileOutput("icone.png", Context.MODE_WORLD_READABLE);
                     fos.write(biteArray);
                     fos.flush();
                     fos.close();
@@ -169,6 +204,8 @@ public class ModifPage extends Activity{
             }
         });
     }
+    //TODO
+    /*faire en sorte d'envoyer tous les informations a la BDD*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent){

@@ -7,6 +7,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 /**
  * Created by guillaume on 07/02/15.
  */
@@ -21,15 +25,29 @@ public class Vendeur extends Activity{
         setContentView(R.layout.vendeur);
 
         deconnection = (TextView) findViewById(R.id.deconnection);
-        login = (TextView) findViewById(R.id.login);
+        login = (TextView) findViewById(R.id.identifiantVendeur);
         geolocalisation = (Button) findViewById(R.id.geolocalisation);
         modifPage = (Button) findViewById(R.id.modifPage);
+
+        //recuperation identifiant
+        try{
+            FileInputStream in=openFileInput("identite.txt");
+            int c;
+            String temp="";
+            while( (c = in.read()) != -1){
+                temp = temp + Character.toString((char)c);
+            }
+            login.setText(temp);
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         deconnection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO
-                //dermer la connexion
+                //fermer la connexion
                 Intent intent = new Intent(Vendeur.this, MainActivity.class);
                 startActivity(intent);
             }
@@ -50,9 +68,5 @@ public class Vendeur extends Activity{
                 startActivity(intent);
             }
         });
-
-        //TODO
-        //mettre nom identifiant
-        login.setText("Identifiant");
     }
 }
