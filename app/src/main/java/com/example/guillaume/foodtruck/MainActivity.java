@@ -13,6 +13,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.ObjectMapper;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -25,7 +28,8 @@ public class MainActivity extends Activity {
     private Button connexion;
     private CheckBox auto;
     private boolean coche=false;
-    private String mailRecup, mdpRecup, type;
+    private ObjectMapper objectMapper;
+    private Personne personne;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,54 +57,22 @@ public class MainActivity extends Activity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //recuperation email
+        //recuperation donnée
+        objectMapper=new ObjectMapper();
         try {
-            FileInputStream inId=openFileInput("email.txt");
-            int c;
-            String temp="";
-            while( (c = inId.read()) != -1){
-                 temp = temp + Character.toString((char)c);
-            }
-            mailRecup=temp;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //recuperation mdp
-        try {
-            FileInputStream in=openFileInput("mdp.txt");
-            int c;
-            String temp="";
-            while( (c = in.read()) != -1){
-                 temp = temp + Character.toString((char)c);
-            }
-            mdpRecup=temp;
-        } catch (FileNotFoundException e) {
-             e.printStackTrace();
-        } catch (IOException e) {
-             e.printStackTrace();
-        }
-        //recuperation typeCompte
-        try {
-            FileInputStream in=openFileInput("compte.txt");
-            int c;
-            String temp="";
-            while( (c = in.read()) != -1){
-                temp = temp + Character.toString((char)c);
-            }
-            type=temp;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            FileInputStream in=openFileInput("personne.json");
+            personne=objectMapper.readValue(in, Personne.class);
+        }catch (JsonGenerationException f){
+            f.printStackTrace();
+        }catch (IOException f){
+            f.printStackTrace();
         }
 
         if(coche==true) {
             auto.setChecked(true);
-            email.setText(mailRecup);
+            email.setText(personne.getMail());
             email.setTextColor(Color.BLACK);
-            mdp.setText(mdpRecup);
+            mdp.setText(personne.getMdp());
             mdp.setTextColor(Color.BLACK);
             mdp.setTransformationMethod(PasswordTransformationMethod.getInstance());
         }
@@ -147,21 +119,17 @@ public class MainActivity extends Activity {
                     Toast.makeText(MainActivity.this, R.string.erreurMail, Toast.LENGTH_SHORT).show();
                     email.setText("");
                     //Message d'erreur si ne correspond pas au base d'un mot de passe
-                }else if(!(m.length()>6 && (m.matches(".*[0-9]+[A-Z]+.*") || m.matches(".*[A-Z]+[0-9]+.*") || m.matches(".*[A-Z]+.*[0-9]+.*") || m.matches(".*[0-9]+.*[A-Z]+.*")))){
+                }else if(!(m.length()>6 && (m.matches(".*[0-9]+[A-Z]+.*") || m.matches(".*[A-Z]+[0-9]+.*") || m.matches(".*[A-Z]+.*[0-9]+.*") || m.matches(".*[0-9]+.*[A-Z]+.*")))) {
                     Toast.makeText(MainActivity.this, R.string.erreurValMdp, Toast.LENGTH_SHORT).show();
                     mdp.setText("");
-                }else{
-                    if(!(m.equals(mdpRecup) && e.equals(mailRecup))) {
+                }else if(!(m.equals(personne.getMdp()) && e.equals(personne.getMail()))) {
                         Toast.makeText(MainActivity.this, R.string.erreurInconnu, Toast.LENGTH_SHORT).show();
-                    }else {
-                        if(type.toString().equals("client")) {
-                            Intent intentClient = new Intent(MainActivity.this, Client.class);
-                            startActivity(intentClient);
-                        }else if(type.toString().equals("vendeur")){
-                            Intent intentClient = new Intent(MainActivity.this, Vendeur.class);
-                            startActivity(intentClient);
-                        }
-                    }
+                }else if(personne.getType().equals("client")) {
+                        Intent intentClient = new Intent(MainActivity.this, Client.class);
+                        startActivity(intentClient);
+                }else if(personne.getType().equals("vendeur")){
+                        Intent intentClient = new Intent(MainActivity.this, Vendeur.class);
+                        startActivity(intentClient);
                 }
             }
         });
@@ -171,28 +139,6 @@ public class MainActivity extends Activity {
             public void onClick(View view) {
                 if(auto.isChecked()) {
                     coche=true;
-                    //sauvegarde email
-                    try {
-                        FileOutputStream outId = MainActivity.this.openFileOutput("id.txt", Context.MODE_PRIVATE);
-                        outId.write(email.getText().toString().getBytes());
-                        outId.flush();
-                        outId.close();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    //sauvegarde mdp
-                    try {
-                        FileOutputStream outMdp = MainActivity.this.openFileOutput("mdp.txt", Context.MODE_PRIVATE);
-                        outMdp.write(mdp.getText().toString().getBytes());
-                        outMdp.flush();
-                        outMdp.close();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
                     //sauvegarde coche
                     try {
                         FileOutputStream out = MainActivity.this.openFileOutput("coche.txt", Context.MODE_PRIVATE);

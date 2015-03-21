@@ -18,9 +18,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class Geolocalisation extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener{
+public class Geolocalisation extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, GoogleMap.OnMarkerDragListener{
 
     private GoogleApiClient mGoogleApiClient;
     private double currentLatitude, currentLongitude;
@@ -28,6 +29,7 @@ public class Geolocalisation extends FragmentActivity implements GoogleApiClient
     private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST=9000;
     private LocationRequest mLocationRequest;
     private Button envoie;
+    private MarkerOptions options;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
     @Override
@@ -85,8 +87,7 @@ public class Geolocalisation extends FragmentActivity implements GoogleApiClient
         // Do a null check to confirm that we have not already instantiated the map.
         if (mMap == null) {
             // Try to obtain the map from the SupportMapFragment.
-            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
-                    .getMap();
+            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
             // Check if we were successful in obtaining the map.
             if (mMap != null) {
                 setUpMap();
@@ -116,13 +117,12 @@ public class Geolocalisation extends FragmentActivity implements GoogleApiClient
     }
 
     private void handleNewLocation(Location location){
-        Log.d(TAG, location.toString());
         currentLatitude=location.getLatitude();
         currentLongitude=location.getLongitude();
         LatLng latLng=new LatLng(currentLatitude, currentLongitude);
-        MarkerOptions options=new MarkerOptions().position(latLng).title("Vous êtes ici");
+        options=new MarkerOptions().title("Vous êtes ici").draggable(true).position(latLng);
         mMap.addMarker(options);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20));
     }
 
     @Override
@@ -149,4 +149,20 @@ public class Geolocalisation extends FragmentActivity implements GoogleApiClient
         handleNewLocation(location);
     }
 
+    @Override
+    public void onMarkerDragStart(Marker marker) {
+
+    }
+
+    @Override
+    public void onMarkerDrag(Marker marker) {
+
+    }
+
+    @Override
+    public void onMarkerDragEnd(Marker marker) {
+        currentLatitude=marker.getPosition().latitude;
+        currentLongitude=marker.getPosition().longitude;
+        Log.i("test", marker.getPosition().latitude+" "+marker.getPosition().longitude);
+    }
 }

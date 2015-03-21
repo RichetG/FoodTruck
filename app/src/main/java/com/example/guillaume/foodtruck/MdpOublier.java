@@ -11,8 +11,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.ObjectMapper;
+
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -23,7 +25,8 @@ public class MdpOublier extends Activity{
 
     private EditText mail, nouveauMdp, verifNouveauMdp;
     private Button valider;
-    private String mailRecup;
+    private ObjectMapper objectMapper;
+    private Personne personne;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,20 +37,15 @@ public class MdpOublier extends Activity{
         nouveauMdp = (EditText) findViewById(R.id.nouveauMdp);
         verifNouveauMdp = (EditText) findViewById(R.id.verifNouveauMdp);
         valider = (Button) findViewById(R.id.validerNouveauMdp);
-
-        //recuperation email
+        //recuperation donnée
+        objectMapper=new ObjectMapper();
         try {
-            FileInputStream inId=openFileInput("email.txt");
-            int c;
-            String temp="";
-            while( (c = inId.read()) != -1){
-                temp = temp + Character.toString((char)c);
-            }
-            mailRecup=temp;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            FileInputStream in=openFileInput("personne.json");
+            personne=objectMapper.readValue(in, Personne.class);
+        }catch (JsonGenerationException f){
+            f.printStackTrace();
+        }catch (IOException f){
+            f.printStackTrace();
         }
 
         mail.setOnClickListener(new View.OnClickListener() {
@@ -99,17 +97,19 @@ public class MdpOublier extends Activity{
                     nouveauMdp.setText("");
                     verifNouveauMdp.setText("");
                 }else{
-                    if(e.equals(mailRecup)) {
-                        //sauvegarde mdp
+                    if(e.equals(personne.getMail())) {
+                        //stockage des donnée d'une personne
+                        personne=new Personne(personne.getPseudo(), personne.getMail(), nouveauMdp.getText().toString(), personne.getType());
+                        objectMapper=new ObjectMapper();
                         try {
-                            FileOutputStream outId = openFileOutput("mdp.txt", Context.MODE_WORLD_READABLE);
-                            outId.write(nouveauMdp.getText().toString().getBytes());
-                            outId.close();
-                        } catch (FileNotFoundException f) {
+                            FileOutputStream out=openFileOutput("personne.json", Context.MODE_PRIVATE);
+                            objectMapper.writeValue(out, personne);
+                        }catch (JsonGenerationException f){
                             f.printStackTrace();
-                        } catch (IOException f) {
+                        }catch (IOException f){
                             f.printStackTrace();
                         }
+
                         Toast.makeText(MdpOublier.this, R.string.validerMdp, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(MdpOublier.this, MainActivity.class);
                         startActivity(intent);

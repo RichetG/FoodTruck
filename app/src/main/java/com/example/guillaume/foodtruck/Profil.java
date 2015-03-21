@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import java.io.FileNotFoundException;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.ObjectMapper;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -17,6 +19,8 @@ import java.io.IOException;
 public class Profil extends Activity {
 
     private Button client, vendeur;
+    private Personne personne;
+    private ObjectMapper objectMapper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,14 +35,15 @@ public class Profil extends Activity {
             public void onClick(View view) {
                 Intent intent = new Intent(Profil.this, Client.class);
                 startActivity(intent);
-                //sauvegarde typeCompte
+                //stockage des donné d'une personne de type client
+                personne=new Personne(Compte.identifiant.getText().toString(), Compte.mail.getText().toString(), Compte.mdp.getText().toString(), "client");
+                objectMapper=new ObjectMapper();
                 try {
-                    FileOutputStream outId = openFileOutput("compte.txt", Context.MODE_WORLD_READABLE);
-                    outId.write("client".getBytes());
-                    outId.close();
-                } catch (FileNotFoundException f) {
+                    FileOutputStream out=openFileOutput("personne.json", Context.MODE_PRIVATE);
+                    objectMapper.writeValue(out, personne);
+                }catch (JsonGenerationException f){
                     f.printStackTrace();
-                } catch (IOException f) {
+                }catch (IOException f){
                     f.printStackTrace();
                 }
             }
@@ -49,14 +54,15 @@ public class Profil extends Activity {
             public void onClick(View view) {
                 Intent intent = new Intent(Profil.this, Vendeur.class);
                 startActivity(intent);
-                //sauvegarde typeCompte
+                //stockage des donnée d'une personne de type vendeur
+                personne=new Personne(Compte.identifiant.getText().toString(), Compte.mail.getText().toString(), Compte.mdp.getText().toString(), "vendeur");
+                objectMapper=new ObjectMapper();
                 try {
-                    FileOutputStream outId = openFileOutput("compte.txt", Context.MODE_WORLD_READABLE);
-                    outId.write("vendeur".getBytes());
-                    outId.close();
-                } catch (FileNotFoundException f) {
+                    FileOutputStream out=openFileOutput("personne.json", Context.MODE_PRIVATE);
+                    objectMapper.writeValue(out, personne);
+                }catch (JsonGenerationException f){
                     f.printStackTrace();
-                } catch (IOException f) {
+                }catch (IOException f){
                     f.printStackTrace();
                 }
             }

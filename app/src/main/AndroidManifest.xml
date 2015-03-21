@@ -49,6 +49,7 @@
         <activity android:name=".MdpOublier"/>
         <activity android:name=".Geolocalisation"/>
         <activity android:name=".Visite"/>
+
     </application>
 
 </manifest>

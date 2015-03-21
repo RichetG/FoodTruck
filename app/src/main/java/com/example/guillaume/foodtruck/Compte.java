@@ -1,7 +1,6 @@
 package com.example.guillaume.foodtruck;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,17 +10,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import org.codehaus.jackson.map.ObjectMapper;
 
 /**
  * Created by guillaume on 06/02/15.
  */
-public class Compte extends Activity {
+public class Compte extends Activity{
 
-    private EditText identifiant, mail, mdp, verif;
+    private EditText  verif;
+    public static EditText identifiant, mail, mdp;
     private Button valider;
+    private Personne personne;
+    private ObjectMapper objectMapper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,36 +98,6 @@ public class Compte extends Activity {
                         mdp.setText("");
                         verif.setText("");
                     } else {
-                        //sauvegarde identifiant
-                        try {
-                            FileOutputStream outId = openFileOutput("identite.txt", Context.MODE_WORLD_READABLE);
-                            outId.write(identifiant.getText().toString().getBytes());
-                            outId.close();
-                        } catch (FileNotFoundException f) {
-                            f.printStackTrace();
-                        } catch (IOException f) {
-                            f.printStackTrace();
-                        }
-                        //sauvegarde email
-                        try {
-                            FileOutputStream out = openFileOutput("email.txt", Context.MODE_WORLD_READABLE);
-                            out.write(mail.getText().toString().getBytes());
-                            out.close();
-                        } catch (FileNotFoundException f) {
-                            f.printStackTrace();
-                        } catch (IOException f) {
-                            f.printStackTrace();
-                        }
-                        //sauvegarde mdp
-                        try {
-                            FileOutputStream outId = openFileOutput("mdp.txt", Context.MODE_WORLD_READABLE);
-                            outId.write(mdp.getText().toString().getBytes());
-                            outId.close();
-                        } catch (FileNotFoundException f) {
-                            f.printStackTrace();
-                        } catch (IOException f) {
-                            f.printStackTrace();
-                        }
                         Intent intent = new Intent(Compte.this, Profil.class);
                         startActivity(intent);
                     }

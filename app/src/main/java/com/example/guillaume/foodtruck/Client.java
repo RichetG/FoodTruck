@@ -20,8 +20,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.ObjectMapper;
+
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class Client extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
@@ -33,6 +35,8 @@ public class Client extends FragmentActivity implements GoogleApiClient.Connecti
     private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST=9000;
     private LocationRequest mLocationRequest;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private ObjectMapper objectMapper;
+    private Personne personne;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,20 +48,18 @@ public class Client extends FragmentActivity implements GoogleApiClient.Connecti
         mGoogleApiClient=new GoogleApiClient.Builder(this).addConnectionCallbacks(this).addOnConnectionFailedListener(this).addApi(LocationServices.API).build();
         mLocationRequest=LocationRequest.create().setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY).setInterval(10*1000).setFastestInterval(1000);
 
-        //recuperation identifiant
-        try{
-            FileInputStream in=openFileInput("identite.txt");
-            int c;
-            String temp="";
-            while( (c = in.read()) != -1){
-                temp = temp + Character.toString((char)c);
-            }
-            id.setText(temp);
-        }catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        //recuperation donnée
+        objectMapper=new ObjectMapper();
+        try {
+            FileInputStream in=openFileInput("personne.json");
+            personne=objectMapper.readValue(in, Personne.class);
+            id.setText(personne.getPseudo());
+        }catch (JsonGenerationException f){
+            f.printStackTrace();
+        }catch (IOException f){
+            f.printStackTrace();
         }
+
 
         deco.setOnClickListener(new View.OnClickListener() {
             @Override

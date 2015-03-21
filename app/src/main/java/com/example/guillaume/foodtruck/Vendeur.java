@@ -7,8 +7,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.ObjectMapper;
+
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -18,6 +20,8 @@ public class Vendeur extends Activity{
 
     private TextView deconnection, login;
     private Button geolocalisation, modifPage;
+    private Personne personne;
+    private ObjectMapper objectMapper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,20 +32,16 @@ public class Vendeur extends Activity{
         login = (TextView) findViewById(R.id.identifiantVendeur);
         geolocalisation = (Button) findViewById(R.id.geolocalisation);
         modifPage = (Button) findViewById(R.id.modifPage);
-
-        //recuperation identifiant
-        try{
-            FileInputStream in=openFileInput("identite.txt");
-            int c;
-            String temp="";
-            while( (c = in.read()) != -1){
-                temp = temp + Character.toString((char)c);
-            }
-            login.setText(temp);
-        }catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        //recuperation donnée
+        objectMapper=new ObjectMapper();
+        try {
+            FileInputStream in=openFileInput("personne.json");
+            personne=objectMapper.readValue(in, Personne.class);
+            login.setText(personne.getPseudo());
+        }catch (JsonGenerationException f){
+            f.printStackTrace();
+        }catch (IOException f){
+            f.printStackTrace();
         }
 
         deconnection.setOnClickListener(new View.OnClickListener() {

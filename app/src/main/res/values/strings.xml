@@ -26,7 +26,7 @@
     <string name="erreurVide">Adresse email et mot de passe sont obligatoires</string>
     <string name="erreurVide2">Identifiant, adresse email et mot de passe sont obligatoires</string>
     <string name="erreurVide3">adresse email et mot de passe sont obligatoires</string>
-    <string name="erreurInconnu">L adresse email et mot de passe sont incorrects</string>
+    <string name="erreurInconnu">L adresse email et/ou mot de passe sont incorrects</string>
     <string name="erreurMdp">Les mots de passes sont différents</string>
     <string name="erreurMailFaux">L adresse mail nest pas valide</string>
     <string name="erreurValMdp">Mot de passe comportant au minimum 6 caractères, 1 majuscule et 1 chiffre</string>
