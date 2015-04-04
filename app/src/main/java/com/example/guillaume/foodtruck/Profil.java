@@ -36,7 +36,7 @@ public class Profil extends Activity {
                 Intent intent = new Intent(Profil.this, Client.class);
                 startActivity(intent);
                 //stockage des donné d'une personne de type client
-                personne=new Personne(Compte.identifiant.getText().toString(), Compte.mail.getText().toString(), Compte.mdp.getText().toString(), "client");
+                personne=new Personne(Compte.identifiant.getText().toString(), Compte.mail.getText().toString(), Compte.mdp.getText().toString(), 1);
                 objectMapper=new ObjectMapper();
                 try {
                     FileOutputStream out=openFileOutput("personne.json", Context.MODE_PRIVATE);
@@ -55,7 +55,7 @@ public class Profil extends Activity {
                 Intent intent = new Intent(Profil.this, Vendeur.class);
                 startActivity(intent);
                 //stockage des donnée d'une personne de type vendeur
-                personne=new Personne(Compte.identifiant.getText().toString(), Compte.mail.getText().toString(), Compte.mdp.getText().toString(), "vendeur");
+                personne=new Personne(Compte.identifiant.getText().toString(), Compte.mail.getText().toString(), Compte.mdp.getText().toString(), 0);
                 objectMapper=new ObjectMapper();
                 try {
                     FileOutputStream out=openFileOutput("personne.json", Context.MODE_PRIVATE);

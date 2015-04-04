@@ -11,10 +11,10 @@ public class Personne {
     public String pseudo;
     public String mail;
     public String mdp;
-    public String type;
+    public int type;
 
     @JsonCreator
-    public Personne(@JsonProperty("pseudo")String pseudo, @JsonProperty("mail")String mail, @JsonProperty("mdp")String mdp, @JsonProperty("type")String type) {
+    public Personne(@JsonProperty("pseudo")String pseudo, @JsonProperty("mail")String mail, @JsonProperty("mdp")String mdp, @JsonProperty("type")int type) {
         this.pseudo=pseudo;
         this.mail=mail;
         this.mdp=mdp;
@@ -33,7 +33,7 @@ public class Personne {
         this.mdp = mdp;
     }
 
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
     }
 
@@ -49,7 +49,7 @@ public class Personne {
         return pseudo;
     }
 
-    public String getType() {
+    public int getType() {
         return type;
     }
 }

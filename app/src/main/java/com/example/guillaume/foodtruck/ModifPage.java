@@ -29,7 +29,7 @@ import java.io.InputStream;
  */
 public class ModifPage extends Activity{
 
-    private EditText description, promo, menus, titre;
+    private EditText description, promo, menus, titre, telephone;
     private Button logo, valider;
     private static final int REQUEST_CODE=1;
     private Bitmap bitmap;
@@ -47,6 +47,7 @@ public class ModifPage extends Activity{
         menus = (EditText) findViewById(R.id.menu);
         titre=(EditText) findViewById(R.id.titre);
         logo = (Button) findViewById(R.id.choisir);
+        telephone = (EditText) findViewById(R.id.telephone);
         valider = (Button) findViewById(R.id.validerPage);
         imageView = (ImageView) findViewById(R.id.image);
 
@@ -60,6 +61,7 @@ public class ModifPage extends Activity{
             description.setText(page.getDescription());
             promo.setText(page.getPromo());
             menus.setText(page.getMenu());
+            telephone.setText(page.getTelephone());
             Bitmap bm = BitmapFactory.decodeByteArray(page.getLogo(), 0, page.getLogo().length);
             imageView.setImageBitmap(bm);
         }catch (JsonGenerationException f){
@@ -79,23 +81,27 @@ public class ModifPage extends Activity{
         valider.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ModifPage.this, R.string.modification, Toast.LENGTH_SHORT).show();
-                //stockage des donnée d'une personne de type vendeur
-                imageView.buildDrawingCache();
-                Bitmap bmap = imageView.getDrawingCache();
-                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                bmap.compress(Bitmap.CompressFormat.PNG, 0 , bos);
-                byte[] biteArray = bos.toByteArray();
-                Log.i("test", String.valueOf(biteArray));
-                page=new Page(titre.getText().toString(), description.getText().toString(), promo.getText().toString(), menus.getText().toString(), biteArray);
-                objectMapper=new ObjectMapper();
-                try {
-                    FileOutputStream out=openFileOutput("page.json", Context.MODE_PRIVATE);
-                    objectMapper.writeValue(out, page);
-                }catch (JsonGenerationException f){
-                    f.printStackTrace();
-                }catch (IOException f){
-                    f.printStackTrace();
+                if(!(telephone.getText().toString().matches("[0-9]+") && telephone.length()==10)){
+                    telephone.setText("");
+                    Toast.makeText(ModifPage.this, R.string.erreurTelephone, Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(ModifPage.this, R.string.modification, Toast.LENGTH_SHORT).show();
+                    //stockage des donnée d'une personne de type vendeur
+                    imageView.buildDrawingCache();
+                    Bitmap bmap = imageView.getDrawingCache();
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    bmap.compress(Bitmap.CompressFormat.PNG, 0, bos);
+                    byte[] biteArray = bos.toByteArray();
+                    page = new Page(titre.getText().toString(), description.getText().toString(), promo.getText().toString(), menus.getText().toString(), telephone.getText().toString(), biteArray);
+                    objectMapper = new ObjectMapper();
+                    try {
+                        FileOutputStream out = openFileOutput("page.json", Context.MODE_PRIVATE);
+                        objectMapper.writeValue(out, page);
+                    } catch (JsonGenerationException f) {
+                        f.printStackTrace();
+                    } catch (IOException f) {
+                        f.printStackTrace();
+                    }
                 }
             }
         });

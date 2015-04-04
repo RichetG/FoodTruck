@@ -124,10 +124,10 @@ public class MainActivity extends Activity {
                     mdp.setText("");
                 }else if(!(m.equals(personne.getMdp()) && e.equals(personne.getMail()))) {
                         Toast.makeText(MainActivity.this, R.string.erreurInconnu, Toast.LENGTH_SHORT).show();
-                }else if(personne.getType().equals("client")) {
+                }else if(personne.getType()==1) {
                         Intent intentClient = new Intent(MainActivity.this, Client.class);
                         startActivity(intentClient);
-                }else if(personne.getType().equals("vendeur")){
+                }else if(personne.getType()==0){
                         Intent intentClient = new Intent(MainActivity.this, Vendeur.class);
                         startActivity(intentClient);
                 }

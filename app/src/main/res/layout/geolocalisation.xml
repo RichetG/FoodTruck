@@ -8,8 +8,29 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/ajouter"
+        android:layout_gravity="left|top"
+        android:text="@string/ajouter"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/envoie"
         android:layout_gravity="right|top"
         android:text="@string/envoyer"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/supprimer"
+        android:layout_gravity="left|bottom"
+        android:text="@string/supprimer"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/modifier"
+        android:layout_gravity="right|bottom"
+        android:text="@string/modifier"/>
 
 </fragment>

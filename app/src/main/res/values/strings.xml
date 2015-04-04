@@ -33,8 +33,12 @@
     <string name="erreurIdentif">Identifiant trop court minimum 4 caractères</string>
     <string name="erreurMail">Adresse email non conforme</string>
     <string name="validerMdp">Mot de passe modifié</string>
+    <string name="erreurTelephone">Le numero de telephone non conforme</string>
     <string name="description">Description:</string>
+    <string name="supprimer">Supprimer marker</string>
     <string name="promotion">Promotions:</string>
+    <string name="telephone">Telephone:</string>
+    <string name="ajouter">Ajouter marker</string>
     <string name="menus">Menus:</string>
     <string name="choisir">Choisir un logo</string>
     <string name="mapKey">AIzaSyBFtcmf2HNZA6Z_eLwtFscgLj09uueH1ZQ</string>
@@ -42,5 +46,14 @@
     <string name="echec">Connexion des services de localisation échoué avec le code </string>
     <string name="connecte">Services de localisation connectés</string>
     <string name="modification">Les modifications ont bien été enregistrées</string>
+    <string name="selection">Titre marker a supprimer</string>
+    <string name="markerIncorrect">Titre de marker inexistant</string>
+    <string name="modifier">Modifier titre marker</string>
+    <string name="ancien">Titre marker a modifier</string>
+    <string name="nouveauM">Nouveau titre marker</string>
+    <string name="supp">Suppression marker</string>
+    <string name="modi">Modification titre marker</string>
+    <string name="changement">Le titre du marker a bien ete modifier</string>
+    <string name="identique">Le titre du marker existe deja</string>
 
 </resources>

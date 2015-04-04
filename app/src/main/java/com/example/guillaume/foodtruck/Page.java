@@ -8,15 +8,16 @@ import org.codehaus.jackson.annotate.JsonCreator;
  */
 public class Page {
 
-    public String promo, description, menu, titre;
+    public String promo, description, menu, titre, telephone;
     public byte[] logo;
 
     @JsonCreator
-    public Page(@JsonProperty("titre")String titre, @JsonProperty("description")String description, @JsonProperty("promo")String promo, @JsonProperty("menu")String menu, @JsonProperty("logo")byte[] logo){
+    public Page(@JsonProperty("titre")String titre, @JsonProperty("description")String description, @JsonProperty("promo")String promo, @JsonProperty("menu")String menu, @JsonProperty("telephone")String telephone, @JsonProperty("logo")byte[] logo){
         this.titre=titre;
         this.description=description;
         this.promo=promo;
         this.menu=menu;
+        this.telephone=telephone;
         this.logo=logo;
     }
 
@@ -40,6 +41,8 @@ public class Page {
         this.titre = titre;
     }
 
+    public void setTelephone(String telephone){ this.telephone= telephone; }
+
     public byte[] getLogo() {
         return logo;
     }
@@ -59,4 +62,6 @@ public class Page {
     public String getTitre() {
         return titre;
     }
+
+    public String getTelephone() { return telephone; }
 }
