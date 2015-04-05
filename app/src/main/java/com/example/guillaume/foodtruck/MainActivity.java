@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -62,6 +63,7 @@ public class MainActivity extends Activity {
         try {
             FileInputStream in=openFileInput("personne.json");
             personne=objectMapper.readValue(in, Personne.class);
+            Log.d("re", objectMapper.writeValueAsString(personne));
         }catch (JsonGenerationException f){
             f.printStackTrace();
         }catch (IOException f){
@@ -122,6 +124,8 @@ public class MainActivity extends Activity {
                 }else if(!(m.length()>6 && (m.matches(".*[0-9]+[A-Z]+.*") || m.matches(".*[A-Z]+[0-9]+.*") || m.matches(".*[A-Z]+.*[0-9]+.*") || m.matches(".*[0-9]+.*[A-Z]+.*")))) {
                     Toast.makeText(MainActivity.this, R.string.erreurValMdp, Toast.LENGTH_SHORT).show();
                     mdp.setText("");
+                }else if(personne==null){
+                        Toast.makeText(MainActivity.this, R.string.erreurInconnu, Toast.LENGTH_SHORT).show();
                 }else if(!(m.equals(personne.getMdp()) && e.equals(personne.getMail()))) {
                         Toast.makeText(MainActivity.this, R.string.erreurInconnu, Toast.LENGTH_SHORT).show();
                 }else if(personne.getType()==1) {

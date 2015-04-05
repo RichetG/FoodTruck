@@ -55,5 +55,9 @@
     <string name="modi">Modification titre marker</string>
     <string name="changement">Le titre du marker a bien ete modifier</string>
     <string name="identique">Le titre du marker existe deja</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="defaut">Marker par defaut</string>
+    <string name="LatIncorrect">Latitude et/ou Longitude incorrect</string>
 
 </resources>

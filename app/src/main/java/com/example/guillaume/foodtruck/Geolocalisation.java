@@ -91,18 +91,88 @@ public class Geolocalisation extends FragmentActivity implements GoogleMap.OnMar
         ajouter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LatLng latLng = new LatLng(48.8534100, 2.3488000);
-                if(determinationCpt()==true){
-                    determinationCpt();
-                }
-                options = new MarkerOptions().title("Localisation " + nb).draggable(true).position(latLng);
-                mMap.addMarker(options);
-                List<Double> liste = new ArrayList<Double>();
-                liste.add(latLng.latitude);
-                liste.add(latLng.longitude);
-                markers.put(options.getTitle(), liste);
-                nb=1;
-                centrer();
+                AlertDialog.Builder boite;
+                LinearLayout layout=new LinearLayout(v.getContext());
+                layout.setOrientation(LinearLayout.VERTICAL);
+                final EditText latitude=new EditText(v.getContext());
+                final EditText longitude=new EditText(v.getContext());
+                final EditText titre=new EditText(v.getContext());
+                boite=new AlertDialog.Builder(v.getContext());
+                latitude.setText(R.string.latitude);
+                latitude.setTextColor(Color.GRAY);
+                latitude.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        latitude.setText("");
+                        latitude.setTextColor(Color.WHITE);
+                    }
+                });
+                longitude.setText(R.string.longitude);
+                longitude.setTextColor(Color.GRAY);
+                longitude.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        longitude.setText("");
+                        longitude.setTextColor(Color.WHITE);
+                    }
+                });
+                titre.setText(R.string.titre);
+                titre.setTextColor(Color.GRAY);
+                titre.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        titre.setText("");
+                        titre.setTextColor(Color.WHITE);
+                    }
+                });
+                layout.addView(latitude);
+                layout.addView(longitude);
+                layout.addView(titre);
+                boite.setView(layout);
+                boite.setTitle(R.string.ajouter);
+                boite.setPositiveButton(R.string.valider, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(!(latitude.getText().toString().matches("[0-9]+.[0-9]+") || latitude.getText().toString().matches("[0-9]+") || longitude.getText().toString().matches("[0-9]+.[0-9]+") || longitude.getText().toString().matches("[0-9]+")) ){
+                            Toast.makeText(Geolocalisation.this, R.string.LatIncorrect, Toast.LENGTH_SHORT).show();
+                        }else {
+                            LatLng latLng = new LatLng(Double.parseDouble(latitude.getText().toString()), Double.parseDouble(longitude.getText().toString()));
+                            if(titre.getText().toString().equals("Titre")){
+                                if(determinationCpt()==true){
+                                    determinationCpt();
+                                }
+                                options = new MarkerOptions().title("Localisation "+nb).draggable(true).position(latLng);
+                                nb=1;
+                            }else {
+                                options = new MarkerOptions().title(titre.getText().toString()).draggable(true).position(latLng);
+                            }
+                            mMap.addMarker(options);
+                            List<Double> liste = new ArrayList<Double>();
+                            liste.add(latLng.latitude);
+                            liste.add(latLng.longitude);
+                            markers.put(options.getTitle(), liste);
+                            centrer();
+                        }
+                    }
+                });
+                boite.setNeutralButton(R.string.defaut, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        LatLng latLng = new LatLng(48.856614, 2.3522219000000177);
+                        if(determinationCpt()==true){
+                            determinationCpt();
+                        }
+                        options = new MarkerOptions().title("Localisation "+nb).draggable(true).position(latLng);
+                        mMap.addMarker(options);
+                        List<Double> liste = new ArrayList<Double>();
+                        liste.add(latLng.latitude);
+                        liste.add(latLng.longitude);
+                        markers.put(options.getTitle(), liste);
+                        nb=1;
+                        centrer();
+                    }
+                });
+                boite.show();
             }
         });
 
