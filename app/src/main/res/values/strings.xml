@@ -59,5 +59,6 @@
     <string name="longitude">Longitude</string>
     <string name="defaut">Marker par defaut</string>
     <string name="LatIncorrect">Latitude et/ou Longitude incorrect</string>
+    <string name="departement">Selectionner departement où vous exercez:</string>
 
 </resources>
