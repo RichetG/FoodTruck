@@ -34,6 +34,7 @@ public class Compte extends Activity{
         verif = (EditText) findViewById(R.id.verificationCompte);
         valider = (Button) findViewById(R.id.buttonValiderCompte);
 
+        //action identifiant
         identifiant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -42,6 +43,7 @@ public class Compte extends Activity{
             }
         });
 
+        //action mail
         mail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,6 +52,7 @@ public class Compte extends Activity{
             }
         });
 
+        //action mdp
         mdp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,6 +62,7 @@ public class Compte extends Activity{
             }
         });
 
+        //action verif
         verif.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,6 +72,7 @@ public class Compte extends Activity{
             }
         });
 
+        //action valider
         valider.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,6 +102,7 @@ public class Compte extends Activity{
                         Toast.makeText(Compte.this, R.string.erreurValMdp, Toast.LENGTH_SHORT).show();
                         mdp.setText("");
                         verif.setText("");
+                        //sinon redirection sur la page Profil
                     } else {
                         Intent intent = new Intent(Compte.this, Profil.class);
                         startActivity(intent);

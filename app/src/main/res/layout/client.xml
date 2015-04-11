@@ -30,12 +30,16 @@
 
     </LinearLayout>
 
+    <ListView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/repertoire"/>
+
     <Button
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:text="@string/select"
     android:id="@+id/select"
     android:layout_gravity="bottom"/>
-
 
 </fragment>

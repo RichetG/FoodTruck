@@ -8,12 +8,12 @@ import org.codehaus.jackson.annotate.JsonCreator;
  */
 public class Page {
 
-    public String promo, description, menu, titre, telephone;
+    public String promo, description, menu, titre, telephone, mail;
     public byte[] logo;
     public int departement;
 
     @JsonCreator
-    public Page(@JsonProperty("titre")String titre, @JsonProperty("departement")int departement, @JsonProperty("description")String description, @JsonProperty("promo")String promo, @JsonProperty("menu")String menu, @JsonProperty("telephone")String telephone, @JsonProperty("logo")byte[] logo){
+    public Page(@JsonProperty("mail")String mail, @JsonProperty("titre")String titre, @JsonProperty("departement")int departement, @JsonProperty("description")String description, @JsonProperty("promo")String promo, @JsonProperty("menu")String menu, @JsonProperty("telephone")String telephone, @JsonProperty("logo")byte[] logo){
         this.titre=titre;
         this.departement=departement;
         this.description=description;
@@ -21,6 +21,7 @@ public class Page {
         this.menu=menu;
         this.telephone=telephone;
         this.logo=logo;
+        this.mail=mail;
     }
 
     public void setLogo(byte[] logo) {
@@ -70,4 +71,6 @@ public class Page {
     }
 
     public String getTelephone() { return telephone; }
+
+    public String getMail(){ return mail;}
 }

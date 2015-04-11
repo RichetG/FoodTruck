@@ -44,7 +44,7 @@ public class MainActivity extends Activity {
         auto = (CheckBox) findViewById(R.id.auto);
         oublier = (TextView) findViewById(R.id.oublier);
 
-        //recuperation coche
+        //recuperation de la valeur de coche
         try {
             FileInputStream in=MainActivity.this.openFileInput("coche.txt");
             int c;
@@ -58,18 +58,18 @@ public class MainActivity extends Activity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //recuperation donnée
+        //recuperation des données de Personne (pseudo, mail, mdp, type)
         objectMapper=new ObjectMapper();
         try {
             FileInputStream in=openFileInput("personne.json");
             personne=objectMapper.readValue(in, Personne.class);
-            Log.d("re", objectMapper.writeValueAsString(personne));
         }catch (JsonGenerationException f){
             f.printStackTrace();
         }catch (IOException f){
             f.printStackTrace();
         }
 
+        //si checkbox coche alors on recupere les identifiants d'authentification
         if(coche==true) {
             auto.setChecked(true);
             email.setText(personne.getMail());
@@ -124,26 +124,31 @@ public class MainActivity extends Activity {
                 }else if(!(m.length()>6 && (m.matches(".*[0-9]+[A-Z]+.*") || m.matches(".*[A-Z]+[0-9]+.*") || m.matches(".*[A-Z]+.*[0-9]+.*") || m.matches(".*[0-9]+.*[A-Z]+.*")))) {
                     Toast.makeText(MainActivity.this, R.string.erreurValMdp, Toast.LENGTH_SHORT).show();
                     mdp.setText("");
+                    //Message d'erreur si tentative de connection alors que c'est la premiere fois d'utilisation
                 }else if(personne==null){
                         Toast.makeText(MainActivity.this, R.string.erreurInconnu, Toast.LENGTH_SHORT).show();
+                    //Message d'erreur si le mail et le mdp ne correspondent pas
                 }else if(!(m.equals(personne.getMdp()) && e.equals(personne.getMail()))) {
                         Toast.makeText(MainActivity.this, R.string.erreurInconnu, Toast.LENGTH_SHORT).show();
+                    //si le type vaut 1 alors redirection sur la page client
                 }else if(personne.getType()==1) {
                         Intent intentClient = new Intent(MainActivity.this, Client.class);
                         startActivity(intentClient);
                 }else if(personne.getType()==0){
+                    //si le type vaut 0 alors redirection sur la page vendeur
                         Intent intentClient = new Intent(MainActivity.this, Vendeur.class);
                         startActivity(intentClient);
                 }
             }
         });
 
+        //action lors de la selection/deselection de la checkbox
         auto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(auto.isChecked()) {
                     coche=true;
-                    //sauvegarde coche
+                    //sauvegarde valeur coche
                     try {
                         FileOutputStream out = MainActivity.this.openFileOutput("coche.txt", Context.MODE_PRIVATE);
                         out.write(String.valueOf(coche).getBytes());
@@ -156,7 +161,7 @@ public class MainActivity extends Activity {
                     }
                 }else {
                     coche=false;
-                    //sauvegarde coche
+                    //sauvegarde valeur coche
                     try {
                         FileOutputStream out = MainActivity.this.openFileOutput("coche.txt", Context.MODE_PRIVATE);
                         out.write(String.valueOf(coche).getBytes());
@@ -171,6 +176,7 @@ public class MainActivity extends Activity {
             }
         });
 
+        //redirection sur la page MdpOublier
         oublier.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

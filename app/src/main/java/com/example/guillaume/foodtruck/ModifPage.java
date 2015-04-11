@@ -19,6 +19,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.ByteArrayOutputStream;
@@ -45,6 +47,7 @@ public class ModifPage extends Activity{
     private Page page;
     private List<String>departement;
     private int numDep;
+    private Personne personne;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +69,22 @@ public class ModifPage extends Activity{
         //recuperation donnée
         objectMapper=new ObjectMapper();
         try {
+            FileInputStream in = openFileInput("personne.json");
+            personne=objectMapper.readValue(in, Personne.class);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //recuperation donnée
+        objectMapper=new ObjectMapper();
+        try {
+            //TODO recuperer fichier json du bon vendeur avec appel sur son mail
             FileInputStream in=openFileInput("page.json");
             page=objectMapper.readValue(in, Page.class);
             titre.setText(page.getTitre());
@@ -251,7 +270,7 @@ public class ModifPage extends Activity{
                     ByteArrayOutputStream bos = new ByteArrayOutputStream();
                     bmap.compress(Bitmap.CompressFormat.PNG, 0, bos);
                     byte[] biteArray = bos.toByteArray();
-                    page = new Page(titre.getText().toString(), numDep, description.getText().toString(), promo.getText().toString(), menus.getText().toString(), telephone.getText().toString(), biteArray);
+                    page = new Page(personne.getMail(), titre.getText().toString(), numDep, description.getText().toString(), promo.getText().toString(), menus.getText().toString(), telephone.getText().toString(), biteArray);
                     objectMapper = new ObjectMapper();
                     try {
                         FileOutputStream out = openFileOutput("page.json", Context.MODE_PRIVATE);

@@ -22,7 +22,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -35,11 +34,15 @@ import java.util.Map;
 public class Geolocalisation extends FragmentActivity implements GoogleMap.OnMarkerDragListener{
 
     private double currentLatitude, currentLongitude;
+    private String titre;
     private Map<String, List<Double>> markers;
     private Button envoie, ajouter, supprimer, modifier;
     private MarkerOptions options;
     private int nb=1;
     private ObjectMapper objectMapper;
+    private Position1 position;
+    private Position2 position2;
+    private Personne personne;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
     @Override
@@ -54,8 +57,18 @@ public class Geolocalisation extends FragmentActivity implements GoogleMap.OnMar
 
         objectMapper=new ObjectMapper();
         try {
+            FileInputStream in=openFileInput("personne.json");
+            personne=objectMapper.readValue(in, Personne.class);
+        }catch (JsonGenerationException f){
+            f.printStackTrace();
+        }catch (IOException f){
+            f.printStackTrace();
+        }
+
+        objectMapper=new ObjectMapper();
+        try {
             FileInputStream in=openFileInput("markers.json");
-            markers=objectMapper.readValue(in, new TypeReference<Map<String, List<Double>>>() {});
+            position=objectMapper.readValue(in, Position1.class);
         }catch (JsonGenerationException f){
             f.printStackTrace();
         }catch (IOException f){
@@ -77,9 +90,14 @@ public class Geolocalisation extends FragmentActivity implements GoogleMap.OnMar
                     Toast.makeText(Geolocalisation.this, coord, Toast.LENGTH_SHORT).show();
                 }
                 objectMapper=new ObjectMapper();
+                position=new Position1(personne.getMail());
+                for(String valeur:markers.keySet()) {
+                    position2 = new Position2(valeur, markers.get(valeur).get(0), markers.get(valeur).get(1));
+                    position.addPosition(position2);
+                }
                 try {
                     FileOutputStream out=openFileOutput("markers.json", MODE_PRIVATE);
-                    objectMapper.writeValue(out, markers);
+                    objectMapper.writeValue(out, position);
                 }catch (JsonGenerationException f){
                     f.printStackTrace();
                 }catch (IOException f){
@@ -302,9 +320,10 @@ public class Geolocalisation extends FragmentActivity implements GoogleMap.OnMar
             // Try to obtain the map from the SupportMapFragment.
             mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(48, 2), 5));
-            if(markers!=null) {
-                for (String valeur : markers.keySet()) {
-                    LatLng latLng=new LatLng(markers.get(valeur).get(0), markers.get(valeur).get(1));
+            if(position!=null) {
+                for (String valeur : position.keySet()) {
+                    markers.put(valeur, position.getPosition(valeur));
+                    LatLng latLng = new LatLng(position.getPosition(valeur).get(0), position.getPosition(valeur).get(1));
                     options = new MarkerOptions().title(valeur).draggable(true).position(latLng);
                     mMap.addMarker(options);
                 }
