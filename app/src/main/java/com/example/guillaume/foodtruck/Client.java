@@ -3,20 +3,34 @@ package com.example.guillaume.foodtruck;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 
+import android.location.LocationListener;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -25,27 +39,30 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class Client extends FragmentActivity{
+public class Client extends FragmentActivity implements LocationListener{
 
     private TextView deco, id;
     private Button select;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private ObjectMapper objectMapper;
-    private ListView liste;
-    private ArrayList<HashMap<String, String>>table;
     private Personne personne;
+    private LocationManager locationManager;
+    private Double latitude, longitude;
+    private Page page;
+    private Position1 position;
+    public ArrayList<Marker> markers;
+    public Marker courant;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.client);
-        setUpMapIfNeeded();
         id = (TextView) findViewById(R.id.identifiantClient);
         deco = (TextView) findViewById(R.id.deconnectionClient);
-        liste=(ListView) findViewById(R.id.repertoire);
         select=(Button) findViewById(R.id.select);
-        table=new ArrayList<HashMap<String, String>>();
+        markers=new ArrayList<Marker>();
 
         //recuperation des données de personne uniquement pour recuperer le mail en guise de clé BDD
         objectMapper=new ObjectMapper();
@@ -58,6 +75,27 @@ public class Client extends FragmentActivity{
         }catch (IOException f){
             f.printStackTrace();
         }
+
+        objectMapper=new ObjectMapper();
+        try {
+            FileInputStream in=openFileInput("page.json");
+            page=objectMapper.readValue(in, Page.class);
+        }catch (JsonGenerationException f){
+            f.printStackTrace();
+        }catch (IOException f){
+            f.printStackTrace();
+        }
+
+        objectMapper=new ObjectMapper();
+        try {
+            FileInputStream in=openFileInput("markers.json");
+            position=objectMapper.readValue(in, Position1.class);
+        }catch (JsonGenerationException f){
+            f.printStackTrace();
+        }catch (IOException f){
+            f.printStackTrace();
+        }
+        setUpMapIfNeeded();
 
         //redirection vers la page MainActivity
         deco.setOnClickListener(new View.OnClickListener() {
@@ -75,117 +113,11 @@ public class Client extends FragmentActivity{
                 AlertDialog.Builder boite;
                 LinearLayout layout=new LinearLayout(v.getContext());
                 layout.setOrientation(LinearLayout.VERTICAL);
-                final Spinner liste=new Spinner(v.getContext());
-                final ArrayList<String>departement=new ArrayList<String>();
-                departement.add("Ain (01)");
-                departement.add("Aisne (02)");
-                departement.add("Allier (03)");
-                departement.add("Alpes-de-Haute-Provence (04)");
-                departement.add("Hautes-Alpes (05)");
-                departement.add("Alpes-Maritimes (06)");
-                departement.add("Ardèche (07)");
-                departement.add("Ardennes (08)");
-                departement.add("Ariège (09)");
-                departement.add("Aube (10)");
-                departement.add("Aude (11)");
-                departement.add("Aveyron (12)");
-                departement.add("Bouches-du-Rhône (13)");
-                departement.add("Calvados (14)");
-                departement.add("Cantal (15)");
-                departement.add("Charente (16)");
-                departement.add("Charente-Maritime (17)");
-                departement.add("Cher (18)");
-                departement.add("Corrèze (19)");
-                departement.add("Corse-du-Sud (2A)");
-                departement.add("Haute-Corse (2B)");
-                departement.add("Côtes-d'Or (21)");
-                departement.add("Côtes-d'Armor (22)");
-                departement.add("Creuse (23)");
-                departement.add("Dordogne (24)");
-                departement.add("Doubs (25)");
-                departement.add("Drôme (26)");
-                departement.add("Eure (27)");
-                departement.add("Eure-et-Loir (28)");
-                departement.add("Finistère (29)");
-                departement.add("Gard (30)");
-                departement.add("Haute-Garonne (31)");
-                departement.add("Gers (32)");
-                departement.add("Gironde (33)");
-                departement.add("Hérault (34)");
-                departement.add("Ille-et-Vilaine (35)");
-                departement.add("Indre (36)");
-                departement.add("Indre-et-Loire (37)");
-                departement.add("Isère (38)");
-                departement.add("Jura (39)");
-                departement.add("Landes (40)");
-                departement.add("Loir-et-Cher (41)");
-                departement.add("Loire (42)");
-                departement.add("Haute-Loire (43)");
-                departement.add("Loire-Atlantique (44)");
-                departement.add("Loiret (45)");
-                departement.add("Lot (46)");
-                departement.add("Lot-et-Garonne (47)");
-                departement.add("Lozère (48)");
-                departement.add("Maine-et-Loire (49)");
-                departement.add("Manche (50)");
-                departement.add("Marne (51)");
-                departement.add("Haute-Marne (52)");
-                departement.add("Mayenne (53)");
-                departement.add("Meurthe-et-Moselle (54)");
-                departement.add("Meuse (55)");
-                departement.add("Morbihan (56)");
-                departement.add("Moselle (57)");
-                departement.add("Nièvre (58)");
-                departement.add("Nord (59)");
-                departement.add("Oise (60)");
-                departement.add("Orne (61)");
-                departement.add("Pas-de-Calais (62)");
-                departement.add("Puy-de-Dôme (63)");
-                departement.add("Pyrénées-Atlantiques (64)");
-                departement.add("Hautes-Pyrénées (65)");
-                departement.add("Pyrénées-Orientales (66)");
-                departement.add("Bas-Rhin (67)");
-                departement.add("Haut-Rhin (68)");
-                departement.add("Rhône/Métropole de Lyon (69)");
-                departement.add("Haute-Saône (70)");
-                departement.add("Saône-et-Loire (71)");
-                departement.add("Sarthe (72)");
-                departement.add("Savoie (73)");
-                departement.add("Haute-Savoie (74)");
-                departement.add("Paris (75)");
-                departement.add("Seine-Maritime (76)");
-                departement.add("Seine-et-Marne (77)");
-                departement.add("Yvelines (78)");
-                departement.add("Deux-Sèvres (79)");
-                departement.add("Somme (80)");
-                departement.add("Tarn (81)");
-                departement.add("Tarn-et-Garonne (82)");
-                departement.add("Var (83)");
-                departement.add("Vaucluse (84)");
-                departement.add("Vendée (85)");
-                departement.add("Vienne (86)");
-                departement.add("Haute-Vienne (87)");
-                departement.add("Vosges (88)");
-                departement.add("Yonne (89)");
-                departement.add("Territoire de Belfort (90)");
-                departement.add("Essonne (91)");
-                departement.add("Hauts-de-Seine (92)");
-                departement.add("Seine-Saint-Denis (93)");
-                departement.add("Val-de-marne (94)");
-                departement.add("Val-d'Oise (95)");
-                departement.add("Guadeloupe (971)");
-                departement.add("Martinique (972)");
-                departement.add("Guyane (973)");
-                departement.add("La Reunion (974");
-                departement.add("Mayotte (976)");
-
-                ArrayAdapter adapter=new ArrayAdapter(Client.this, android.R.layout.simple_spinner_item, departement);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                liste.setAdapter(adapter);
-
                 final SeekBar barre=new SeekBar(v.getContext());
                 final TextView valeur=new TextView(v.getContext());
+                final TextView titre=new TextView(v.getContext());
                 boite=new AlertDialog.Builder(v.getContext());
+                titre.setText(R.string.distance);
                 barre.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -205,7 +137,7 @@ public class Client extends FragmentActivity{
                 barre.setMax(100);
                 barre.setProgress(50);
                 valeur.setGravity(Gravity.CENTER);
-                layout.addView(liste);
+                layout.addView(titre);
                 layout.addView(barre);
                 layout.addView(valeur);
                 boite.setView(layout);
@@ -213,27 +145,80 @@ public class Client extends FragmentActivity{
                 boite.setPositiveButton(R.string.valider, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //TODO recherche bdd
-
-
+                        mMap.clear();
+                        CircleOptions circle=new CircleOptions().center(new LatLng(latitude, longitude)).radius(barre.getProgress()*1000).strokeColor(Color.RED).strokeWidth(5);
+                        mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("Vous êtes ici"));
+                        mMap.addCircle(circle);
+                        int earth=6378137;
+                        for(int i=0; i<markers.size(); i++){
+                            double distLat=((Math.toRadians(markers.get(i).getPosition().latitude)-Math.toRadians(latitude))/2);
+                            double distLon=((Math.toRadians(markers.get(i).getPosition().longitude)-Math.toRadians(longitude))/2);
+                            double dist=(Math.sin(distLat)*Math.sin(distLat))+Math.cos(Math.toRadians(latitude))*Math.cos(Math.toRadians(markers.get(i).getPosition().latitude))*(Math.sin(distLon)*Math.sin(distLon));
+                            double result=(2*Math.atan2(Math.sqrt(dist), Math.sqrt(1-dist)))*earth;
+                            if(result<=circle.getRadius()){
+                                markers.get(i).setVisible(true);
+                            }else{
+                                markers.get(i).setVisible(false);
+                            }
+                            mMap.addMarker(new MarkerOptions().title(markers.get(i).getTitle()).position(new LatLng(markers.get(i).getPosition().latitude, markers.get(i).getPosition().longitude)).visible(markers.get(i).isVisible()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+                            double ratioDist=(circle.getRadius()*100)/earth;
+                            double bidouillage=(circle.getCenter().latitude*ratioDist)/100;
+                            double ecartLat=0.02*(circle.getRadius()/10000);
+                            double ecartLon=0.06*(circle.getRadius()/10000);
+                            double newLatP=circle.getCenter().latitude+ecartLat+bidouillage;
+                            double newLatN=circle.getCenter().latitude-ecartLat-bidouillage;
+                            double newLonP=circle.getCenter().longitude+bidouillage+ecartLon;
+                            double newLonN=circle.getCenter().longitude-bidouillage-ecartLon;
+                            LatLngBounds.Builder builder=new LatLngBounds.Builder();
+                            LatLng latLng=new LatLng(newLatP, newLonP);
+                            LatLng latLng1=new LatLng(newLatP, newLonN);
+                            LatLng latLng2=new LatLng(newLatN, newLonP);
+                            LatLng latLng3=new LatLng(newLatN, newLonN);
+                            builder.include(latLng);
+                            builder.include(latLng1);
+                            builder.include(latLng2);
+                            builder.include(latLng3);
+                            LatLngBounds bounds=builder.build();
+                            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 0));
+                        }
                     }
                 });
                 boite.show();
             }
         });
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                marker.showInfoWindow();
+                return true;
+            }
+        });
+        mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        locationManager=(LocationManager)this.getSystemService(LOCATION_SERVICE);
+        if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            abonnementGps();
+        }
         setUpMapIfNeeded();
     }
-    //TODO
-    //faire en sorte de recuperer les coords du ou des vendeurs
 
     @Override
     protected void onPause() {
         super.onPause();
+        desabonnementGps();
+    }
+
+    public void abonnementGps(){
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, this);
+    }
+
+    public void desabonnementGps(){
+        locationManager.removeUpdates(this);
     }
 
     private void setUpMapIfNeeded() {
@@ -241,6 +226,80 @@ public class Client extends FragmentActivity{
         if (mMap == null) {
             // Try to obtain the map from the SupportMapFragment.
             mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapCli)).getMap();
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(48, 2), 5));
+            for(String valeur:position.keySet()){
+                MarkerOptions options=new MarkerOptions().title(valeur).position(new LatLng(position.getPosition(valeur).get(0), position.getPosition(valeur).get(1))).visible(false).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                Marker m=mMap.addMarker(options);
+                markers.add(m);
+            }
+        }
+    }
+
+    @Override
+    public void onLocationChanged(final Location location) {
+        final LatLng latLng=new LatLng(location.getLatitude(), location.getLongitude());
+        mMap.addMarker(new MarkerOptions().title("Vous êtes ici").position(latLng));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+        latitude=location.getLatitude();
+        longitude=location.getLongitude();
+    }
+
+    @Override
+    public void onStatusChanged(final String provider, final int status, final Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(final String provider) {
+        if("gps".equals(provider)){
+            abonnementGps();
+        }
+    }
+
+    @Override
+    public void onProviderDisabled(final String provider) {
+        if("gps".equals(provider)){
+            desabonnementGps();
+        }
+    }
+
+    private class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter{
+
+        private View view;
+
+        public CustomInfoWindowAdapter(){
+            view=getLayoutInflater().inflate(R.layout.info_bulle, null);
+            view.setBackgroundColor(Color.WHITE);
+        }
+
+        @Override
+        public View getInfoWindow(final Marker marker) {
+            final EditText titre=(EditText) view.findViewById(R.id.titreInfo);
+            titre.setText(page.getTitre());
+            final ImageView image=(ImageView) view.findViewById(R.id.imageInfo);
+            image.setImageBitmap(BitmapFactory.decodeByteArray(page.getLogo(), 0, page.getLogo().length));
+            final EditText promo=(EditText) view.findViewById(R.id.promoInfo);
+            promo.setText(page.getPromo());
+            final EditText dispo=(EditText) view.findViewById(R.id.dispoInfo);
+            dispo.setText("Present le: "+marker.getTitle());
+            final EditText url=(EditText) view.findViewById(R.id.url);
+            url.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Client.this, Detail.class);
+                    startActivity(intent);
+                }
+            });
+
+            return view;
+        }
+
+        @Override
+        public View getInfoContents(Marker marker) {
+            if(Client.this.courant!=null){
+                Client.this.courant.showInfoWindow();
+            }
+            return null;
         }
     }
 }

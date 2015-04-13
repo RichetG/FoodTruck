@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -134,7 +135,7 @@ public class Geolocalisation extends FragmentActivity implements GoogleMap.OnMar
                         longitude.setTextColor(Color.WHITE);
                     }
                 });
-                titre.setText(R.string.titre);
+                titre.setText(R.string.jour);
                 titre.setTextColor(Color.GRAY);
                 titre.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -288,6 +289,20 @@ public class Geolocalisation extends FragmentActivity implements GoogleMap.OnMar
                     }
                 });
                 boite.show();
+            }
+        });
+
+        mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+            @Override
+            public void onMapLoaded() {
+                LatLngBounds.Builder builder=new LatLngBounds.Builder();
+                for(String valeur: markers.keySet()){
+                    LatLng latLng=new LatLng(markers.get(valeur).get(0), markers.get(valeur).get(1));
+                    builder.include(latLng);
+                }
+                LatLngBounds bounds=builder.build();
+                CameraUpdate cu=CameraUpdateFactory.newLatLngBounds(bounds, 100);
+                mMap.animateCamera(cu);
             }
         });
     }

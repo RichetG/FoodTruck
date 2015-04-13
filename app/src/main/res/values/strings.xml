@@ -46,20 +46,21 @@
     <string name="echec">Connexion des services de localisation échoué avec le code </string>
     <string name="connecte">Services de localisation connectés</string>
     <string name="modification">Les modifications ont bien été enregistrées</string>
-    <string name="selection">Titre marker a supprimer</string>
-    <string name="markerIncorrect">Titre de marker inexistant</string>
-    <string name="modifier">Modifier titre marker</string>
+    <string name="selection">Marker a supprimer</string>
+    <string name="markerIncorrect">Marker inexistant</string>
+    <string name="modifier">Modifier jour de la semaine marker</string>
     <string name="ancien">Titre marker a modifier</string>
     <string name="nouveauM">Nouveau titre marker</string>
     <string name="supp">Suppression marker</string>
-    <string name="modi">Modification titre marker</string>
+    <string name="modi">Modification du jour de la semaine marker</string>
     <string name="changement">Le titre du marker a bien ete modifier</string>
     <string name="identique">Le titre du marker existe deja</string>
     <string name="latitude">Latitude</string>
     <string name="longitude">Longitude</string>
     <string name="defaut">Marker par defaut</string>
     <string name="LatIncorrect">Latitude et/ou Longitude incorrect</string>
-    <string name="departement">Selectionner departement où vous exercez:</string>
     <string name="food">Selection des foodTrucks</string>
+    <string name="distance">Selection du rayon distance désiré:</string>
+    <string name="jour">Jour de la semaine</string>
 
 </resources>

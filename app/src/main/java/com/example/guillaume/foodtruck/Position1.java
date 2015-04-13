@@ -44,8 +44,4 @@ public class Position1 {
         return markers.get(titre);
     }
 
-    public int size(){
-        return markers.size();
-    }
-
 }

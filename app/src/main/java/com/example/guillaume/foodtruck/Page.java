@@ -10,12 +10,10 @@ public class Page {
 
     public String promo, description, menu, titre, telephone, mail;
     public byte[] logo;
-    public int departement;
 
     @JsonCreator
-    public Page(@JsonProperty("mail")String mail, @JsonProperty("titre")String titre, @JsonProperty("departement")int departement, @JsonProperty("description")String description, @JsonProperty("promo")String promo, @JsonProperty("menu")String menu, @JsonProperty("telephone")String telephone, @JsonProperty("logo")byte[] logo){
+    public Page(@JsonProperty("mail")String mail, @JsonProperty("titre")String titre, @JsonProperty("description")String description, @JsonProperty("promo")String promo, @JsonProperty("menu")String menu, @JsonProperty("telephone")String telephone, @JsonProperty("logo")byte[] logo){
         this.titre=titre;
-        this.departement=departement;
         this.description=description;
         this.promo=promo;
         this.menu=menu;
@@ -27,8 +25,6 @@ public class Page {
     public void setLogo(byte[] logo) {
         this.logo = logo;
     }
-
-    public void setDepartement(int departement){ this.departement=departement;}
 
     public void setMenu(String menu) {
         this.menu = menu;
@@ -51,8 +47,6 @@ public class Page {
     public byte[] getLogo() {
         return logo;
     }
-
-    public int getDepartement(){return departement;}
 
     public String getDescription() {
         return description;
