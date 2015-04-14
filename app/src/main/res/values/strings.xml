@@ -48,11 +48,11 @@
     <string name="modification">Les modifications ont bien été enregistrées</string>
     <string name="selection">Marker a supprimer</string>
     <string name="markerIncorrect">Marker inexistant</string>
-    <string name="modifier">Modifier jour de la semaine marker</string>
+    <string name="modifier">Modifier marker</string>
     <string name="ancien">Titre marker a modifier</string>
-    <string name="nouveauM">Nouveau titre marker</string>
-    <string name="supp">Suppression marker</string>
-    <string name="modi">Modification du jour de la semaine marker</string>
+    <string name="supp">Supprimer marker</string>
+    <string name="modi">Modifier marker</string>
+    <string name="choix">Supprimer / Modifier</string>
     <string name="changement">Le titre du marker a bien ete modifier</string>
     <string name="identique">Le titre du marker existe deja</string>
     <string name="latitude">Latitude</string>
@@ -61,6 +61,8 @@
     <string name="LatIncorrect">Latitude et/ou Longitude incorrect</string>
     <string name="food">Selection des foodTrucks</string>
     <string name="distance">Selection du rayon distance désiré:</string>
-    <string name="jour">Jour de la semaine</string>
+    <string name="jour">Jour de la semaine et horaire (ex: lundi 12.30-14):</string>
+    <string name="detail">Voir détail: cliquez</string>
+    <string name="here"><u>ici</u></string>
 
 </resources>

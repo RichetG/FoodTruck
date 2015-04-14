@@ -190,8 +190,14 @@ public class Client extends FragmentActivity implements LocationListener{
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                marker.showInfoWindow();
-                return true;
+                boolean bool=false;
+                if(marker.getTitle().equals("Vous êtes ici")){
+                    bool=false;
+                }else {
+                    marker.showInfoWindow();
+                    bool=true;
+                }
+                return false;
             }
         });
         mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
@@ -237,11 +243,13 @@ public class Client extends FragmentActivity implements LocationListener{
 
     @Override
     public void onLocationChanged(final Location location) {
-        final LatLng latLng=new LatLng(location.getLatitude(), location.getLongitude());
-        mMap.addMarker(new MarkerOptions().title("Vous êtes ici").position(latLng));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
-        latitude=location.getLatitude();
-        longitude=location.getLongitude();
+        if(courant==null) {
+            final LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            courant = mMap.addMarker(new MarkerOptions().title("Vous êtes ici").position(latLng));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
+        }
     }
 
     @Override
@@ -274,15 +282,16 @@ public class Client extends FragmentActivity implements LocationListener{
 
         @Override
         public View getInfoWindow(final Marker marker) {
-            final EditText titre=(EditText) view.findViewById(R.id.titreInfo);
+            final TextView titre = (TextView) view.findViewById(R.id.titreInfo);
             titre.setText(page.getTitre());
-            final ImageView image=(ImageView) view.findViewById(R.id.imageInfo);
+            final ImageView image = (ImageView) view.findViewById(R.id.imageInfo);
             image.setImageBitmap(BitmapFactory.decodeByteArray(page.getLogo(), 0, page.getLogo().length));
-            final EditText promo=(EditText) view.findViewById(R.id.promoInfo);
-            promo.setText(page.getPromo());
-            final EditText dispo=(EditText) view.findViewById(R.id.dispoInfo);
-            dispo.setText("Present le: "+marker.getTitle());
-            final EditText url=(EditText) view.findViewById(R.id.url);
+            final TextView promo = (TextView) view.findViewById(R.id.promoInfo);
+            promo.setText("Promo: "+page.getPromo());
+            final TextView dispo = (TextView) view.findViewById(R.id.dispoInfo);
+            String[] phrase=marker.getTitle().split(" ");
+            dispo.setText("Présent le: " + phrase[0]+" à "+phrase[1]+"h");
+            final TextView url = (TextView) view.findViewById(R.id.here);
             url.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -290,7 +299,6 @@ public class Client extends FragmentActivity implements LocationListener{
                     startActivity(intent);
                 }
             });
-
             return view;
         }
 
