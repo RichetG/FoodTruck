@@ -62,7 +62,5 @@
     <string name="food">Selection des foodTrucks</string>
     <string name="distance">Selection du rayon distance désiré:</string>
     <string name="jour">Jour de la semaine et horaire (ex: lundi 12.30-14):</string>
-    <string name="detail">Voir détail: cliquez</string>
-    <string name="here"><u>ici</u></string>
 
 </resources>

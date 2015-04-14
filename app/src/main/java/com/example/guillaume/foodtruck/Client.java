@@ -286,19 +286,17 @@ public class Client extends FragmentActivity implements LocationListener{
             titre.setText(page.getTitre());
             final ImageView image = (ImageView) view.findViewById(R.id.imageInfo);
             image.setImageBitmap(BitmapFactory.decodeByteArray(page.getLogo(), 0, page.getLogo().length));
+            final TextView desc = (TextView) view.findViewById(R.id.desInfo);
+            desc.setText(page.getDescription());
+            final TextView menu = (TextView) view.findViewById(R.id.menuInfo);
+            menu.setText(page.getMenu());
             final TextView promo = (TextView) view.findViewById(R.id.promoInfo);
-            promo.setText("Promo: "+page.getPromo());
+            promo.setText(page.getPromo());
             final TextView dispo = (TextView) view.findViewById(R.id.dispoInfo);
             String[] phrase=marker.getTitle().split(" ");
-            dispo.setText("Présent le: " + phrase[0]+" à "+phrase[1]+"h");
-            final TextView url = (TextView) view.findViewById(R.id.here);
-            url.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(Client.this, Detail.class);
-                    startActivity(intent);
-                }
-            });
+            dispo.setText("Présent le " + phrase[0]+" à "+phrase[1]+"h");
+            final TextView num = (TextView) view.findViewById(R.id.numInfo);
+            num.setText("Numéro: "+page.getTelephone());
             return view;
         }
 
