@@ -32,17 +32,20 @@ public class Vendeur extends Activity{
         login = (TextView) findViewById(R.id.identifiantVendeur);
         geolocalisation = (Button) findViewById(R.id.geolocalisation);
         modifPage = (Button) findViewById(R.id.modifPage);
-        //recuperation donnée
+
+        //TODO cache personne (recuperation)
         objectMapper=new ObjectMapper();
         try {
             FileInputStream in=openFileInput("personne.json");
             personne=objectMapper.readValue(in, Personne.class);
-            login.setText(personne.getPseudo());
+
         }catch (JsonGenerationException f){
             f.printStackTrace();
         }catch (IOException f){
             f.printStackTrace();
         }
+
+        login.setText(personne.getPseudo());//TODO modification a faire: recuperer pseudo du vendeur
 
         deconnection.setOnClickListener(new View.OnClickListener() {
             @Override

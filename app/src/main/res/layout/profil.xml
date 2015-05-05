@@ -6,26 +6,24 @@
     android:layout_height="wrap_content"
     android:layout_width="fill_parent">
 
-    <Button
+    <ImageView
+        android:src="@drawable/vendeur"
         android:id="@+id/vendeur"
-        android:text="@string/vendeur"
-        android:gravity="center"
-        android:background="#31B404"
-        android:textColor="#FFFFFF"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"/>
+        android:adjustViewBounds="true"
+        android:layout_weight="1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
 
     <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent" />
+    android:layout_height="wrap_content"
+    android:layout_width="fill_parent" />
 
-    <Button
+    <ImageView
+        android:src="@drawable/client"
         android:id="@+id/client"
-        android:text="@string/client"
-        android:gravity="center"
-        android:background="#31B404"
-        android:textColor="#FFFFFF"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"/>
+        android:adjustViewBounds="true"
+        android:layout_weight="1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

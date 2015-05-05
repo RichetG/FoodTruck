@@ -89,6 +89,9 @@
     <orderEntry type="library" exported="" name="support-annotations-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="support-v4-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="jackson-core-asl-1.8.5" level="project" />
+    <orderEntry type="library" exported="" name="WebSocket" level="project" />
+    <orderEntry type="library" exported="" name="json-org" level="project" />
+    <orderEntry type="library" exported="" name="socketio" level="project" />
   </component>
 </module>
 

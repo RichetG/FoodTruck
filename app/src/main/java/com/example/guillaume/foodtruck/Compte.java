@@ -8,6 +8,7 @@ import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import org.codehaus.jackson.map.ObjectMapper;
@@ -22,6 +23,8 @@ public class Compte extends Activity{
     private Button valider;
     private Personne personne;
     private ObjectMapper objectMapper;
+    private ImageView load;
+    public static int identifiantExist=-1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,9 @@ public class Compte extends Activity{
         mdp = (EditText) findViewById(R.id.motDePasseCompte);
         verif = (EditText) findViewById(R.id.verificationCompte);
         valider = (Button) findViewById(R.id.buttonValiderCompte);
+        /*load=(ImageView) findViewById(R.id.load);
+        load.startAnimation(AnimationUtils.loadAnimation(Compte.this, R.anim.rotate));
+        load.setVisibility(View.INVISIBLE);*/
 
         //action identifiant
         identifiant.setOnClickListener(new View.OnClickListener() {
@@ -97,16 +103,20 @@ public class Compte extends Activity{
                     mdp.setText("");
                     verif.setText("");
                     //Message d'erreur si mdp inferieur a 7, ne comprend pas une majuscule et un chiffre
-                }else {
-                    if (!(m.length() > 6 && (m.matches(".*[0-9]+[A-Z]+.*") || m.matches(".*[A-Z]+[0-9]+.*") || m.matches(".*[A-Z]+.*[0-9]+.*") || m.matches(".*[0-9]+.*[A-Z]+.*")))) {
-                        Toast.makeText(Compte.this, R.string.erreurValMdp, Toast.LENGTH_SHORT).show();
-                        mdp.setText("");
-                        verif.setText("");
-                        //sinon redirection sur la page Profil
-                    } else {
-                        Intent intent = new Intent(Compte.this, Profil.class);
-                        startActivity(intent);
-                    }
+                }else if (!(m.length() > 6 && (m.matches(".*[0-9]+[A-Z]+.*") || m.matches(".*[A-Z]+[0-9]+.*") || m.matches(".*[A-Z]+.*[0-9]+.*") || m.matches(".*[0-9]+.*[A-Z]+.*")))) {
+                    Toast.makeText(Compte.this, R.string.erreurValMdp, Toast.LENGTH_SHORT).show();
+                    mdp.setText("");
+                    verif.setText("");
+                    //sinon redirection sur la page Profil
+                }
+                //TODO recherche du l'existance du login sur le serveur   FAIT
+                MainActivity.socket.emit("listPersonnes");
+                if(identifiantExist==0){
+                    Toast.makeText(Compte.this, R.string.erreurIdentifiant, Toast.LENGTH_SHORT).show();
+                }else{
+                    //redirection vers la page profil
+                    Intent intent = new Intent(Compte.this, Profil.class);
+                    startActivity(intent);
                 }
             }
         });

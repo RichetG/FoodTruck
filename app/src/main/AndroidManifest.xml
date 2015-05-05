@@ -20,7 +20,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
 
@@ -48,7 +48,6 @@
         <activity android:name=".ModifPage"/>
         <activity android:name=".MdpOublier"/>
         <activity android:name=".Geolocalisation"/>
-        <activity android:name=".Visite"/>
 
     </application>
 

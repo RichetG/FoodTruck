@@ -37,7 +37,8 @@ public class MdpOublier extends Activity{
         nouveauMdp = (EditText) findViewById(R.id.nouveauMdp);
         verifNouveauMdp = (EditText) findViewById(R.id.verifNouveauMdp);
         valider = (Button) findViewById(R.id.validerNouveauMdp);
-        //recuperation donnée
+
+        //TODO cache personne (recuperation)
         objectMapper=new ObjectMapper();
         try {
             FileInputStream in=openFileInput("personne.json");
@@ -97,9 +98,11 @@ public class MdpOublier extends Activity{
                     nouveauMdp.setText("");
                     verifNouveauMdp.setText("");
                 }else{
-                    if(e.equals(personne.getMail())) {
+                    if(e.equals(personne.getMail())) {//TODO modification a faire: appel au serveur pour recuperer le mail de l'utilisateur et le comparé a celui saisi
                         //stockage des donnée d'une personne
+                        //TODO modifiacation a faire: envoyer nouveau mdp au serveur pour qu'il le modifie
                         personne=new Personne(personne.getPseudo(), personne.getMail(), nouveauMdp.getText().toString(), personne.getType());
+                        //TODO cache personne (sauvegarde)
                         objectMapper=new ObjectMapper();
                         try {
                             FileOutputStream out=openFileOutput("personne.json", Context.MODE_PRIVATE);

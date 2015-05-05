@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,6 +54,7 @@ public class Geolocalisation extends FragmentActivity implements GoogleMap.OnMar
         envoie=(Button) findViewById(R.id.envoie);
         ajouter=(Button) findViewById(R.id.ajouter);
 
+        //TODO cache personne
         objectMapper=new ObjectMapper();
         try {
             FileInputStream in=openFileInput("personne.json");
@@ -65,6 +65,7 @@ public class Geolocalisation extends FragmentActivity implements GoogleMap.OnMar
             f.printStackTrace();
         }
 
+        //TODO cache markers
         objectMapper=new ObjectMapper();
         try {
             FileInputStream in=openFileInput("markers.json");
@@ -82,15 +83,13 @@ public class Geolocalisation extends FragmentActivity implements GoogleMap.OnMar
         envoie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO
-                //envoi la localisation au client
-
                 for(String valeur: markers.keySet()){
                     String coord=markers.get(valeur).get(0)+" "+markers.get(valeur).get(1);
                     Toast.makeText(Geolocalisation.this, coord, Toast.LENGTH_SHORT).show();
                 }
+                //TODO cache markers (sauvegarde), /!\pas a touché création du json markers qui sera utilisé pour envoyer les requetes
                 objectMapper=new ObjectMapper();
-                position=new Position1(personne.getMail());
+                position=new Position1(personne.getMail()); //TODO modificaiton a faire: recuperer le mail du vendeur pour l'utilisé comme clé dans le json
                 for(String valeur:markers.keySet()) {
                     position2 = new Position2(valeur, markers.get(valeur).get(0), markers.get(valeur).get(1));
                     position.addPosition(position2);
@@ -103,6 +102,7 @@ public class Geolocalisation extends FragmentActivity implements GoogleMap.OnMar
                 }catch (IOException f){
                     f.printStackTrace();
                 }
+                //TODO faire: envoyer les markers au serveur sur le vendeur adéquat
             }
         });
 
@@ -192,13 +192,17 @@ public class Geolocalisation extends FragmentActivity implements GoogleMap.OnMar
             @Override
             public void onMapLoaded() {
                 LatLngBounds.Builder builder=new LatLngBounds.Builder();
-                for(String valeur: markers.keySet()){
-                    LatLng latLng=new LatLng(markers.get(valeur).get(0), markers.get(valeur).get(1));
-                    builder.include(latLng);
+                if(!markers.isEmpty()) {
+                    for (String valeur : markers.keySet()) {
+                        LatLng latLng = new LatLng(markers.get(valeur).get(0), markers.get(valeur).get(1));
+                        builder.include(latLng);
+                    }
+                    LatLngBounds bounds = builder.build();
+                    CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 100);
+                    mMap.animateCamera(cu);
+                }else{
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(48, 2), 5));
                 }
-                LatLngBounds bounds=builder.build();
-                CameraUpdate cu=CameraUpdateFactory.newLatLngBounds(bounds, 100);
-                mMap.animateCamera(cu);
             }
         });
 

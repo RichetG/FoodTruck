@@ -3,18 +3,15 @@ package com.example.guillaume.foodtruck;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -38,8 +35,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class Client extends FragmentActivity implements LocationListener{
 
@@ -64,18 +59,19 @@ public class Client extends FragmentActivity implements LocationListener{
         select=(Button) findViewById(R.id.select);
         markers=new ArrayList<Marker>();
 
+        //TODO cache personne (recuperation)
         //recuperation des données de personne uniquement pour recuperer le mail en guise de clé BDD
         objectMapper=new ObjectMapper();
         try {
             FileInputStream in=openFileInput("personne.json");
             personne=objectMapper.readValue(in, Personne.class);
-            id.setText(personne.getPseudo());
         }catch (JsonGenerationException f){
             f.printStackTrace();
         }catch (IOException f){
             f.printStackTrace();
         }
 
+        //TODO cache page (recuperation)
         objectMapper=new ObjectMapper();
         try {
             FileInputStream in=openFileInput("page.json");
@@ -86,6 +82,7 @@ public class Client extends FragmentActivity implements LocationListener{
             f.printStackTrace();
         }
 
+        //TODO cache markers (recuperation)
         objectMapper=new ObjectMapper();
         try {
             FileInputStream in=openFileInput("markers.json");
@@ -96,6 +93,9 @@ public class Client extends FragmentActivity implements LocationListener{
             f.printStackTrace();
         }
         setUpMapIfNeeded();
+
+        //TODO modification a faire: recuperation du pseudo du client sur le serveur
+        id.setText(personne.getPseudo());
 
         //redirection vers la page MainActivity
         deco.setOnClickListener(new View.OnClickListener() {
@@ -233,6 +233,7 @@ public class Client extends FragmentActivity implements LocationListener{
             // Try to obtain the map from the SupportMapFragment.
             mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapCli)).getMap();
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(48, 2), 5));
+            //TODO modifiacation a faire: recuperation de tous les markers de tous les vendeurs sur le serveur
             for(String valeur:position.keySet()){
                 MarkerOptions options=new MarkerOptions().title(valeur).position(new LatLng(position.getPosition(valeur).get(0), position.getPosition(valeur).get(1))).visible(false).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
                 Marker m=mMap.addMarker(options);
@@ -282,6 +283,7 @@ public class Client extends FragmentActivity implements LocationListener{
 
         @Override
         public View getInfoWindow(final Marker marker) {
+            //TODO modification a faire:recuperation de tous les informations de la page du vendeur, /!\marchera uniqument dans le cas d'un vendeur
             final TextView titre = (TextView) view.findViewById(R.id.titreInfo);
             titre.setText(page.getTitre());
             final ImageView image = (ImageView) view.findViewById(R.id.imageInfo);

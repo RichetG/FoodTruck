@@ -6,6 +6,18 @@
     android:layout_height="wrap_content"
     android:layout_width="fill_parent">
 
+    <ImageView
+        android:id="@+id/load"
+        android:gravity="center"
+        android:layout_width="fill_parent"
+        android:visibility="invisible"
+        android:layout_height="wrap_content"
+        android:src="@drawable/load"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent" />
+
     <EditText
         android:id="@+id/identifiantCompte"
         android:text="@string/identifiant"

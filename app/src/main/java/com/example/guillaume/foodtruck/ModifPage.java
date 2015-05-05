@@ -7,15 +7,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.codehaus.jackson.JsonGenerationException;
@@ -29,8 +24,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by guillaume on 07/02/15.
@@ -60,7 +53,7 @@ public class ModifPage extends Activity{
         valider = (Button) findViewById(R.id.validerPage);
         imageView = (ImageView) findViewById(R.id.image);
 
-        //recuperation donnée
+        //TODO cache personne (recuperation)
         objectMapper=new ObjectMapper();
         try {
             FileInputStream in = openFileInput("personne.json");
@@ -75,25 +68,27 @@ public class ModifPage extends Activity{
             e.printStackTrace();
         }
 
-        //recuperation donnée
+        //TODO cache page (recuperation)
         objectMapper=new ObjectMapper();
         try {
             //TODO recuperer fichier json du bon vendeur avec appel sur son mail
             FileInputStream in=openFileInput("page.json");
             page=objectMapper.readValue(in, Page.class);
-            titre.setText(page.getTitre());
-            titre.setTextColor(Color.BLACK);
-            description.setText(page.getDescription());
-            promo.setText(page.getPromo());
-            menus.setText(page.getMenu());
-            telephone.setText(page.getTelephone());
-            Bitmap bm = BitmapFactory.decodeByteArray(page.getLogo(), 0, page.getLogo().length);
-            imageView.setImageBitmap(bm);
         }catch (JsonGenerationException f){
             f.printStackTrace();
         }catch (IOException f){
             f.printStackTrace();
         }
+
+        //TODO modification a faire: appel serveur pour recuperer les informations de la page du vendeur
+        titre.setText(page.getTitre());
+        titre.setTextColor(Color.BLACK);
+        description.setText(page.getDescription());
+        promo.setText(page.getPromo());
+        menus.setText(page.getMenu());
+        telephone.setText(page.getTelephone());
+        Bitmap bm = BitmapFactory.decodeByteArray(page.getLogo(), 0, page.getLogo().length);
+        imageView.setImageBitmap(bm);
 
         titre.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,7 +112,9 @@ public class ModifPage extends Activity{
                     ByteArrayOutputStream bos = new ByteArrayOutputStream();
                     bmap.compress(Bitmap.CompressFormat.PNG, 0, bos);
                     byte[] biteArray = bos.toByteArray();
+                    //TODO modification a faire: envoyer les informations de la page au serveur
                     page = new Page(personne.getMail(), titre.getText().toString(), description.getText().toString(), promo.getText().toString(), menus.getText().toString(), telephone.getText().toString(), biteArray);
+                    //TODO cache page (sauvegarde)
                     objectMapper = new ObjectMapper();
                     try {
                         FileOutputStream out = openFileOutput("page.json", Context.MODE_PRIVATE);
@@ -141,8 +138,6 @@ public class ModifPage extends Activity{
             }
         });
     }
-    //TODO
-    /*faire en sorte d'envoyer tous les informations a la BDD*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent){
